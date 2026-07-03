@@ -1,6 +1,8 @@
+import 'package:coffee_shop_loyalty/l10n/app_localizations.dart';
 import 'package:coffee_shop_loyalty/models/user_model.dart';
 import 'package:coffee_shop_loyalty/providers/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 class AddUserScreen extends StatefulWidget {
@@ -11,106 +13,122 @@ class AddUserScreen extends StatefulWidget {
 }
 
 class _AddUserScreenState extends State<AddUserScreen> {
+  final _formKey = GlobalKey<FormState>();
+
   final _nameController = TextEditingController();
   final _surnameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _imageController = TextEditingController();
-  final _pointController = TextEditingController();
   final _noteController = TextEditingController();
 
-  void saveUser() {
-    if (_nameController.text.isEmpty || _surnameController.text.isEmpty) return;
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _surnameController.dispose();
+    _phoneController.dispose();
+    _imageController.dispose();
+    _noteController.dispose();
+    super.dispose();
+  }
+
+  String? _required(String? v, String label, AppLocalizations l) =>
+      (v == null || v.trim().isEmpty) ? l.fieldRequired(label) : null;
+
+  Future<void> _saveUser() async {
+    final l = AppLocalizations.of(context);
+    if (!_formKey.currentState!.validate()) return;
+
     final newUser = User(
       id: DateTime.now().millisecondsSinceEpoch,
-      name: _nameController.text,
-      surname: _surnameController.text,
-      phone: _phoneController.text,
-      image: _imageController.text,
-      points: int.parse(_pointController.text),
-      note: _noteController.text.isEmpty ? " " : _nameController.text,
+      name: _nameController.text.trim(),
+      surname: _surnameController.text.trim(),
+      phone: _phoneController.text.trim(),
+      image: _imageController.text.trim(),
+      points: 0, // Yeni üye 0 puan ile başlar
+      note: _noteController.text.trim(),
     );
-    context.read<UserProvider>().addUser(newUser);
-    Navigator.pop(context);
+
+    final success = await context.read<UserProvider>().addUser(newUser);
+
+    if (!mounted) return;
+
+    if (success) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l.registerSuccess),
+          backgroundColor: Colors.green,
+        ),
+      );
+      Navigator.pop(context);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(l.phoneAlreadyRegistered),
+          backgroundColor: Colors.orange,
+        ),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(title: Text("Yeni Kayıt Oluşturma"), centerTitle: true),
+      appBar: AppBar(title: Text(l.newUser), centerTitle: true),
       body: Padding(
-        padding: EdgeInsetsGeometry.all(8),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Card(
-                child: TextField(
+        padding: const EdgeInsets.all(16),
+        child: Form(
+          key: _formKey,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                TextFormField(
                   controller: _nameController,
-                  decoration: InputDecoration(labelText: "Adı"),
+                  decoration: InputDecoration(labelText: '${l.firstName} *'),
+                  textCapitalization: TextCapitalization.words,
+                  validator: (v) => _required(v, l.firstName, l),
                 ),
-              ),
-              SizedBox(height: 12),
-
-              Card(
-                child: TextField(
+                const SizedBox(height: 12),
+                TextFormField(
                   controller: _surnameController,
-                  decoration: InputDecoration(labelText: "Soyadı"),
+                  decoration: InputDecoration(labelText: '${l.lastName} *'),
+                  textCapitalization: TextCapitalization.words,
+                  validator: (v) => _required(v, l.lastName, l),
                 ),
-              ),
-              SizedBox(height: 12),
-
-              Card(
-                child: TextField(
+                const SizedBox(height: 12),
+                TextFormField(
                   controller: _phoneController,
-                  decoration: InputDecoration(labelText: "Telefonu"),
-                ),
-              ),
-              SizedBox(height: 12),
-
-              Card(
-                child: TextField(
-                  controller: _imageController,
-                  decoration: InputDecoration(labelText: "Resim"),
-                ),
-              ),
-              SizedBox(height: 12),
-
-              Card(
-                child: TextField(
-                  controller: _pointController,
-                  decoration: InputDecoration(labelText: "Puanı"),
-                ),
-              ),
-              SizedBox(height: 12),
-
-              Card(
-                child: TextField(
-                  controller: _noteController,
-                  decoration: InputDecoration(labelText: "Not"),
-                ),
-              ),
-              SizedBox(height: 48),
-
-              SizedBox(
-                width: double.infinity,
-                height: 55,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(255, 231, 174, 170),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(18),
-                    ),
-                  ),
-                  onPressed: () {
-                    saveUser();
+                  decoration: InputDecoration(labelText: '${l.phone} *'),
+                  keyboardType: TextInputType.phone,
+                  inputFormatters: [
+                    FilteringTextInputFormatter.digitsOnly,
+                    LengthLimitingTextInputFormatter(11),
+                  ],
+                  validator: (v) {
+                    final phone = v?.trim() ?? '';
+                    if (phone.isEmpty) return l.phoneRequired;
+                    if (phone.length < 10) return l.phoneMinLength;
+                    return null;
                   },
-                  child: const Text(
-                    "Kaydet",
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                  ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _imageController,
+                  decoration: InputDecoration(labelText: l.photoUrlOptional),
+                  keyboardType: TextInputType.url,
+                ),
+                const SizedBox(height: 12),
+                TextFormField(
+                  controller: _noteController,
+                  decoration: InputDecoration(labelText: l.noteOptional),
+                ),
+                const SizedBox(height: 32),
+                ElevatedButton(
+                  onPressed: _saveUser,
+                  child: Text(l.save),
+                ),
+              ],
+            ),
           ),
         ),
       ),

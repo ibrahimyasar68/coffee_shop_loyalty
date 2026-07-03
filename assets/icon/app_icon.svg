@@ -1,0 +1,78 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Ana zemin -->
+  <rect x="0" y="0" width="1024" height="1024" rx="200" fill="#3B1F0E"/>
+
+  <!-- Fincan gövdesi -->
+  <rect x="262" y="380" width="500" height="340" rx="40" fill="#6B3A2A"/>
+  <!-- Kahve yüzeyi -->
+  <ellipse cx="512" cy="380" rx="222" ry="52" fill="#8B5E3C"/>
+  <ellipse cx="512" cy="370" rx="186" ry="38" fill="#2C1208"/>
+  <!-- Tabak -->
+  <ellipse cx="512" cy="726" rx="280" ry="38" fill="#6B3A2A"/>
+  <rect x="232" y="714" width="560" height="28" rx="14" fill="#6B3A2A"/>
+  <!-- Kulp -->
+  <path d="M762 420 Q882 420 882 570 Q882 720 762 720" fill="none" stroke="#6B3A2A" stroke-width="56" stroke-linecap="round"/>
+  <path d="M762 420 Q862 420 862 570 Q862 710 762 710" fill="none" stroke="#3B1F0E" stroke-width="28" stroke-linecap="round"/>
+
+  <!-- Buhar 1 -->
+  <path d="M392 354 Q364 296 392 244 Q420 192 392 138" fill="none" stroke="#D4A574" stroke-width="14" stroke-linecap="round" opacity="0.72"/>
+  <!-- Buhar 2 -->
+  <path d="M512 346 Q484 280 512 218 Q540 156 512 92" fill="none" stroke="#D4A574" stroke-width="16" stroke-linecap="round" opacity="0.88"/>
+  <!-- Buhar 3 -->
+  <path d="M632 354 Q604 296 632 244 Q660 192 632 138" fill="none" stroke="#D4A574" stroke-width="14" stroke-linecap="round" opacity="0.72"/>
+
+  <!-- KAHVE BİTKİSİ -->
+  <g transform="translate(506, 576)">
+    <line x1="0" y1="110" x2="0" y2="-54" stroke="#D4A574" stroke-width="7" stroke-linecap="round"/>
+
+    <line x1="0" y1="68" x2="-88" y2="108" stroke="#D4A574" stroke-width="6" stroke-linecap="round"/>
+    <path d="M-88,108 Q-146,64 -108,30 Q-68,68 -88,108 Z" fill="none" stroke="#D4A574" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="-88" y1="108" x2="-112" y2="44" stroke="#D4A574" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+
+    <line x1="0" y1="68" x2="88" y2="108" stroke="#D4A574" stroke-width="6" stroke-linecap="round"/>
+    <path d="M88,108 Q146,64 108,30 Q68,68 88,108 Z" fill="none" stroke="#D4A574" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="88" y1="108" x2="112" y2="44" stroke="#D4A574" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+
+    <line x1="0" y1="20" x2="-102" y2="34" stroke="#D4A574" stroke-width="6" stroke-linecap="round"/>
+    <path d="M-102,34 Q-162,-14 -116,-48 Q-68,0 -102,34 Z" fill="none" stroke="#D4A574" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="-102" y1="34" x2="-132" y2="-30" stroke="#D4A574" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+    <circle cx="-122" cy="20"  r="13" fill="none" stroke="#D4A574" stroke-width="4.5"/>
+    <circle cx="-146" cy="5"   r="13" fill="none" stroke="#D4A574" stroke-width="4.5"/>
+    <circle cx="-132" cy="-14" r="13" fill="none" stroke="#D4A574" stroke-width="4.5"/>
+    <line x1="-122" y1="20"  x2="-116" y2="10"  stroke="#D4A574" stroke-width="3" stroke-linecap="round"/>
+    <line x1="-146" y1="5"   x2="-138" y2="0"   stroke="#D4A574" stroke-width="3" stroke-linecap="round"/>
+    <line x1="-132" y1="-14" x2="-122" y2="-10" stroke="#D4A574" stroke-width="3" stroke-linecap="round"/>
+
+    <line x1="0" y1="20" x2="102" y2="34" stroke="#D4A574" stroke-width="6" stroke-linecap="round"/>
+    <path d="M102,34 Q162,-14 116,-48 Q68,0 102,34 Z" fill="none" stroke="#D4A574" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="102" y1="34" x2="132" y2="-30" stroke="#D4A574" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+    <circle cx="122" cy="20"  r="13" fill="none" stroke="#D4A574" stroke-width="4.5"/>
+    <circle cx="146" cy="5"   r="13" fill="none" stroke="#D4A574" stroke-width="4.5"/>
+    <circle cx="132" cy="-14" r="13" fill="none" stroke="#D4A574" stroke-width="4.5"/>
+    <line x1="122" y1="20"  x2="116" y2="10"  stroke="#D4A574" stroke-width="3" stroke-linecap="round"/>
+    <line x1="146" y1="5"   x2="138" y2="0"   stroke="#D4A574" stroke-width="3" stroke-linecap="round"/>
+    <line x1="132" y1="-14" x2="122" y2="-10" stroke="#D4A574" stroke-width="3" stroke-linecap="round"/>
+
+    <line x1="0" y1="-24" x2="-68" y2="-40" stroke="#D4A574" stroke-width="6" stroke-linecap="round"/>
+    <path d="M-68,-40 Q-126,-82 -82,-116 Q-38,-78 -68,-40 Z" fill="none" stroke="#D4A574" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="-68" y1="-40" x2="-92" y2="-102" stroke="#D4A574" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+
+    <line x1="0" y1="-24" x2="68" y2="-40" stroke="#D4A574" stroke-width="6" stroke-linecap="round"/>
+    <path d="M68,-40 Q126,-82 82,-116 Q38,-78 68,-40 Z" fill="none" stroke="#D4A574" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="68" y1="-40" x2="92" y2="-102" stroke="#D4A574" stroke-width="2.5" stroke-linecap="round" opacity="0.6"/>
+
+    <circle cx="-10" cy="-64" r="11" fill="none" stroke="#D4A574" stroke-width="4"/>
+    <circle cx="10"  cy="-74" r="11" fill="none" stroke="#D4A574" stroke-width="4"/>
+    <circle cx="0"   cy="-88" r="11" fill="none" stroke="#D4A574" stroke-width="4"/>
+    <line x1="-10" y1="-64" x2="-6"  y2="-54" stroke="#D4A574" stroke-width="3" stroke-linecap="round"/>
+    <line x1="10"  y1="-74" x2="6"   y2="-64" stroke="#D4A574" stroke-width="3" stroke-linecap="round"/>
+    <line x1="0"   y1="-88" x2="0"   y2="-78" stroke="#D4A574" stroke-width="3" stroke-linecap="round"/>
+  </g>
+
+  <!-- İY Lab — sağ alt köşe -->
+  <rect x="574" y="858" width="416" height="122" rx="36" fill="#D4A574"/>
+  <text x="600" y="944" font-family="Georgia, 'Times New Roman', serif" font-size="88" font-weight="700" fill="#3B1F0E" letter-spacing="4">İY</text>
+  <text x="758" y="942" font-family="Arial, Helvetica, sans-serif" font-size="66" font-weight="400" fill="#6B3A2A" letter-spacing="4"> Lab</text>
+
+</svg>

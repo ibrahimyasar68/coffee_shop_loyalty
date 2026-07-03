@@ -1,30 +1,36 @@
-// This is a basic Flutter widget test.
+// WelcomeScreen için temel smoke test.
 //
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
+// MyApp doğrudan pump edilemez çünkü Provider ve açık Hive kutuları gerektirir.
+// Bunun yerine, dış bağımlılığı olmayan WelcomeScreen'in sorunsuz çizildiğini
+// ve temel giriş seçeneklerini gösterdiğini doğruluyoruz.
 
+import 'package:coffee_shop_loyalty/l10n/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:coffee_shop_loyalty/main.dart';
+import 'package:coffee_shop_loyalty/screens/welcome_screen.dart';
 
 void main() {
-  testWidgets('Counter increments smoke test', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('WelcomeScreen giriş seçeneklerini gösterir',
+      (WidgetTester tester) async {
+    // Gerçekçi, dar bir telefon yüzeyi (iPhone 12/13 mantıksal boyutu).
+    // Cam butonlar bu genişlikte de taşmamalı (yatay sağlamlaştırma kontrolü).
+    await tester.binding.setSurfaceSize(const Size(390, 844));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    // Lokalizasyon delegeleri + Türkçe locale ile pump et.
+    await tester.pumpWidget(MaterialApp(
+      locale: const Locale('tr'),
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
+      home: const WelcomeScreen(),
+    ));
+    // Giriş animasyonunun tamamlanması için kareleri ilerlet.
+    await tester.pump(const Duration(seconds: 1));
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
-    await tester.pump();
-
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    // Misafir girişi artık welcome'da değil, üye seçim ekranında.
+    // Welcome yalnızca üye girişine yönlendirir.
+    expect(find.text('Giriş Yap'), findsOneWidget);
+    expect(find.textContaining('Hoş Geldiniz'), findsOneWidget);
   });
 }

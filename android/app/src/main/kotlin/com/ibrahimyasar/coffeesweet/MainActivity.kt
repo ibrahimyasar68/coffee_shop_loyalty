@@ -1,4 +1,4 @@
-package com.example.coffee_shop_loyalty
+package com.ibrahimyasar.coffeesweet
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -24,13 +24,14 @@ class CoffeeAdapter extends TypeAdapter<Coffee> {
       imagePath: fields[4] as String,
       points: fields[5] as int,
       note: fields[6] as String,
+      size: fields[7] as String? ?? 'Orta',
     );
   }
 
   @override
   void write(BinaryWriter writer, Coffee obj) {
     writer
-      ..writeByte(7)
+      ..writeByte(8)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -44,7 +45,9 @@ class CoffeeAdapter extends TypeAdapter<Coffee> {
       ..writeByte(5)
       ..write(obj.points)
       ..writeByte(6)
-      ..write(obj.note);
+      ..write(obj.note)
+      ..writeByte(7)
+      ..write(obj.size);
   }
 
   @override

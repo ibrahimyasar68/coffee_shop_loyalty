@@ -8,14 +8,31 @@ class ProductProvider extends ChangeNotifier {
 
   String _searchQuery = "";
 
+  // Seçili kategori filtresi — null ise "Tümü" (filtre yok)
+  String? _selectedCategory;
+  String? get selectedCategory => _selectedCategory;
+
   List<Coffee> get items {
     if (!_coffeeBox.isOpen) return []; // Kutu açık değilse boş liste dön
-    final allCoffees = _coffeeBox.values.toList();
-    if (_searchQuery.isEmpty) return allCoffees;
+    var list = _coffeeBox.values.toList();
 
-    return allCoffees
-        .where((c) => c.name.toLowerCase().contains(_searchQuery.toLowerCase()))
-        .toList();
+    if (_selectedCategory != null) {
+      final cat = _selectedCategory!.toLowerCase().trim();
+      list = list
+          .where((c) => c.category.toLowerCase().trim() == cat)
+          .toList();
+    }
+    if (_searchQuery.isNotEmpty) {
+      final q = _searchQuery.toLowerCase();
+      list = list.where((c) => c.name.toLowerCase().contains(q)).toList();
+    }
+    return list;
+  }
+
+  // Kategori seç (null = Tümü)
+  void setCategory(String? category) {
+    _selectedCategory = category;
+    notifyListeners();
   }
 
   ProductProvider() {
@@ -74,6 +91,26 @@ class ProductProvider extends ChangeNotifier {
   // Silme özelliği de olsun, lazım olur:
   Future<void> deleteProduct(Coffee coffee) async {
     await coffee.delete();
+    notifyListeners();
+  }
+
+  // Ürün güncelleme
+  Future<void> updateProduct(
+    Coffee coffee, {
+    required String name,
+    required double price,
+    required int points,
+    required String category,
+    required String imagePath,
+    required String note,
+  }) async {
+    coffee.name = name;
+    coffee.price = price;
+    coffee.points = points;
+    coffee.category = category;
+    coffee.imagePath = imagePath;
+    coffee.note = note;
+    await coffee.save();
     notifyListeners();
   }
 }
