@@ -43,6 +43,7 @@ dependencies:
   flutter_launcher_icons: ^0.14.4
   cached_network_image: ^3.4.1
   google_fonts: ^6.2.1
+  crypto: ^3.0.7
 
 flutter_launcher_icons:
   android: true

@@ -1,10 +1,10 @@
 import 'package:coffee_shop_loyalty/l10n/app_localizations.dart';
 import 'package:coffee_shop_loyalty/screens/admin_screen.dart';
 import 'package:coffee_shop_loyalty/theme/app_theme.dart';
+import 'package:coffee_shop_loyalty/utils/security.dart';
 import 'package:coffee_shop_loyalty/widgets/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hive/hive.dart';
 
 /// Admin paneline erişmeden önce gösterilen PIN kapısı.
 ///
@@ -24,21 +24,13 @@ class AdminGateScreen extends StatefulWidget {
 }
 
 class _AdminGateScreenState extends State<AdminGateScreen> {
-  static const _pinKey = 'admin_pin';
   static const _pinLength = 4;
-
-  /// PIN unutulduğunda sıfırlamayı yetkilendiren kurtarma kodu.
-  /// Arka uç olmadığından bu sabit, "ana anahtar" görevi görür —
-  /// işletme bunu kuruluma özel bir değerle değiştirmelidir.
-  static const _recoveryCode = 'COFFEE-RESET-2024';
 
   final _pinController = TextEditingController();
   final _confirmController = TextEditingController();
   String? _error;
 
-  Box get _settings => Hive.box('settings_box');
-
-  bool get _isSetupMode => _settings.get(_pinKey) == null;
+  bool get _isSetupMode => !AdminSecurity.hasPin;
 
   @override
   void dispose() {
@@ -62,13 +54,13 @@ class _AdminGateScreenState extends State<AdminGateScreen> {
         setState(() => _error = l.pinMismatch);
         return;
       }
-      _settings.put(_pinKey, pin);
+      AdminSecurity.setPin(pin);
       _enterAdmin();
       return;
     }
 
     // Doğrulama
-    if (pin == _settings.get(_pinKey)) {
+    if (AdminSecurity.verifyPin(pin)) {
       _enterAdmin();
     } else {
       setState(() {
@@ -128,7 +120,7 @@ class _AdminGateScreenState extends State<AdminGateScreen> {
                 style:
                     ElevatedButton.styleFrom(minimumSize: const Size(88, 40)),
                 onPressed: () {
-                  if (codeCtrl.text.trim() == _recoveryCode) {
+                  if (codeCtrl.text.trim() == AdminSecurity.recoveryCode) {
                     Navigator.pop(ctx, true);
                   } else {
                     setLocal(() => error = l.recoveryCodeWrong);
@@ -143,7 +135,7 @@ class _AdminGateScreenState extends State<AdminGateScreen> {
     );
 
     if (reset == true) {
-      await _settings.delete(_pinKey);
+      await AdminSecurity.clearPin();
       if (!mounted) return;
       setState(() {
         _pinController.clear();

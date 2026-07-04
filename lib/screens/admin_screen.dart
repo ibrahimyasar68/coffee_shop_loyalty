@@ -6,10 +6,10 @@ import 'package:coffee_shop_loyalty/providers/user_provider.dart';
 import 'package:coffee_shop_loyalty/l10n/app_localizations.dart';
 import 'package:coffee_shop_loyalty/l10n/l10n_helpers.dart';
 import 'package:coffee_shop_loyalty/theme/app_theme.dart';
+import 'package:coffee_shop_loyalty/utils/security.dart';
 import 'package:coffee_shop_loyalty/widgets/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 
 class AdminScreen extends StatefulWidget {
@@ -38,7 +38,6 @@ class _AdminScreenState extends State<AdminScreen>
   // Admin PIN'ini değiştir — mevcut PIN doğrulanmadan yenisi kabul edilmez.
   Future<void> _changePin() async {
     final l = AppLocalizations.of(context);
-    final settings = Hive.box('settings_box');
     final currentCtrl = TextEditingController();
     final newCtrl = TextEditingController();
 
@@ -83,7 +82,7 @@ class _AdminScreenState extends State<AdminScreen>
                   style: ElevatedButton.styleFrom(
                       minimumSize: const Size(88, 40)),
                   onPressed: () {
-                    if (currentCtrl.text.trim() != settings.get('admin_pin')) {
+                    if (!AdminSecurity.verifyPin(currentCtrl.text.trim())) {
                       setLocal(() => error = l.currentPinWrong);
                       return;
                     }
@@ -91,7 +90,7 @@ class _AdminScreenState extends State<AdminScreen>
                       setLocal(() => error = l.newPin4Error);
                       return;
                     }
-                    settings.put('admin_pin', newCtrl.text.trim());
+                    AdminSecurity.setPin(newCtrl.text.trim());
                     Navigator.pop(ctx, true);
                   },
                   child: Text(l.save),
