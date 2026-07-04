@@ -1,4 +1,4 @@
-# Sürüm Notları — 1.3.0 (versionCode 6)
+# Sürüm Notları — 1.3.1 (versionCode 7)
 
 Play Console → Closed testing → yeni sürüm oluştururken "Release notes"
 alanına aşağıdaki metinler yapıştırılır (dil başına en fazla 500 karakter).
@@ -34,7 +34,7 @@ What's new in this release:
 
 ## Build bilgisi
 
-- Dosya: `build/app/outputs/bundle/release/app-release.aab` (1.3.0+6)
+- Dosya: `build/app/outputs/bundle/release/app-release.aab` (1.3.1+7)
 - Build komutu (kurtarma kodu dahil — sonraki sürümlerde de aynı kod geçilmeli):
   `flutter build appbundle --release --dart-define=ADMIN_RECOVERY_CODE=<GİZLİ-KOD>`
 - Kurtarma kodunun kendisi repoya yazılmaz; şifre yöneticinde saklı tut.
