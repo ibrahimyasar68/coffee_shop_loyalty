@@ -77,6 +77,7 @@
   "noNote": "Not yok",
   "orderHistory": "Sipariş Geçmişim",
   "logout": "Çıkış Yap",
+  "logoutConfirmMessage": "Oturum kapatılacak ve giriş ekranına dönülecek. Emin misin?",
 
   "selectSize": "Boyut Seçin",
   "quantity": "Adet",

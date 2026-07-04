@@ -470,6 +470,12 @@ abstract class AppLocalizations {
   /// **'Çıkış Yap'**
   String get logout;
 
+  /// No description provided for @logoutConfirmMessage.
+  ///
+  /// In tr, this message translates to:
+  /// **'Oturum kapatılacak ve giriş ekranına dönülecek. Emin misin?'**
+  String get logoutConfirmMessage;
+
   /// No description provided for @selectSize.
   ///
   /// In tr, this message translates to:

@@ -209,6 +209,10 @@ class AppLocalizationsTr extends AppLocalizations {
   String get logout => 'Çıkış Yap';
 
   @override
+  String get logoutConfirmMessage =>
+      'Oturum kapatılacak ve giriş ekranına dönülecek. Emin misin?';
+
+  @override
   String get selectSize => 'Boyut Seçin';
 
   @override

@@ -548,13 +548,13 @@ class _QtyButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        width: 40,
-        height: 40,
+        width: 44,
+        height: 44,
         decoration: BoxDecoration(
           color: context.softFill,
           borderRadius: BorderRadius.circular(12),
         ),
-        child: Icon(icon, size: 18, color: context.inkStrong),
+        child: Icon(icon, size: 20, color: context.inkStrong),
       ),
     );
   }

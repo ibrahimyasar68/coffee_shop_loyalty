@@ -290,8 +290,8 @@ class _QtyStepper extends StatelessWidget {
       onTap: onTap,
       borderRadius: BorderRadius.circular(10),
       child: Padding(
-        padding: const EdgeInsets.all(7),
-        child: Icon(icon, size: 18, color: color),
+        padding: const EdgeInsets.all(12),
+        child: Icon(icon, size: 20, color: color),
       ),
     );
   }

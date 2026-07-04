@@ -71,6 +71,7 @@
   "noNote": "No note",
   "orderHistory": "Order History",
   "logout": "Log Out",
+  "logoutConfirmMessage": "You will be signed out and returned to the welcome screen. Are you sure?",
 
   "selectSize": "Select Size",
   "quantity": "Quantity",

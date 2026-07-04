@@ -208,6 +208,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get logout => 'Log Out';
 
   @override
+  String get logoutConfirmMessage =>
+      'You will be signed out and returned to the welcome screen. Are you sure?';
+
+  @override
   String get selectSize => 'Select Size';
 
   @override

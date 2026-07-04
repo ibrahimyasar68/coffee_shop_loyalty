@@ -26,6 +26,31 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  // Geri tuşu / çıkış ikonu yanlışlıkla basılabildiğinden önce onay sorulur
+  Future<void> _confirmLogout(BuildContext context) async {
+    final l = AppLocalizations.of(context);
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Text(l.logout),
+        content: Text(l.logoutConfirmMessage),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(l.cancel),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(minimumSize: const Size(88, 44)),
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(l.logout),
+          ),
+        ],
+      ),
+    );
+    if (ok == true && context.mounted) _logout(context);
+  }
+
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
@@ -37,7 +62,7 @@ class HomeScreen extends StatelessWidget {
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, _) {
-        if (!didPop) _logout(context);
+        if (!didPop) _confirmLogout(context);
       },
       child: Scaffold(
         bottomNavigationBar: const BottomBar(current: 0),
@@ -99,7 +124,7 @@ class HomeScreen extends StatelessWidget {
             IconButton(
               icon: const Icon(Icons.logout_rounded, color: Colors.white),
               tooltip: l.logout,
-              onPressed: () => _logout(context),
+              onPressed: () => _confirmLogout(context),
             ),
           ],
         ),
@@ -114,9 +139,9 @@ class HomeScreen extends StatelessWidget {
                 style: const TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                   hintText: l.searchHint,
-                  hintStyle: const TextStyle(color: Colors.white38),
+                  hintStyle: const TextStyle(color: Colors.white70),
                   prefixIcon:
-                      const Icon(Icons.search, color: Colors.white38, size: 20),
+                      const Icon(Icons.search, color: Colors.white70, size: 20),
                   filled: true,
                   fillColor: Colors.white.withValues(alpha: 0.1),
                   contentPadding: const EdgeInsets.symmetric(vertical: 10),
@@ -155,7 +180,7 @@ class HomeScreen extends StatelessWidget {
                         crossAxisCount: 2,
                         crossAxisSpacing: 12,
                         mainAxisSpacing: 12,
-                        childAspectRatio: 0.72,
+                        childAspectRatio: 0.70,
                       ),
                       itemCount: products.length,
                       itemBuilder: (context, index) {
@@ -329,19 +354,19 @@ class _ProductGridCard extends StatelessWidget {
                         ScaleTap(
                           onTap: () => _quickAdd(context, l),
                           child: Container(
-                            width: 30,
-                            height: 30,
+                            width: 40,
+                            height: 40,
                             decoration: BoxDecoration(
                               color: context.isDarkMode
                                   ? AppColors.caramel
                                   : AppColors.espresso,
-                              borderRadius: BorderRadius.circular(9),
+                              borderRadius: BorderRadius.circular(12),
                             ),
                             child: Icon(Icons.add,
                                 color: context.isDarkMode
                                     ? AppColors.espresso
                                     : AppColors.caramel,
-                                size: 18),
+                                size: 22),
                           ),
                         ),
                       ],
