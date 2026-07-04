@@ -50,6 +50,43 @@ class AppRadius {
   static const lg = 20.0;
 }
 
+/// Açık/koyu temaya duyarlı semantik renkler.
+///
+/// Ekranlar sabit `Colors.white` / `AppColors.cream` yerine bunları
+/// kullanmalı; aksi halde koyu temada krem zemin ve beyaz kartlar kalır.
+extension AppThemeContext on BuildContext {
+  bool get isDarkMode => Theme.of(this).brightness == Brightness.dark;
+
+  /// Kart / yüzey zemini (açık: beyaz, koyu: kahve tonlu yüzey)
+  Color get surfaceCard =>
+      isDarkMode ? const Color(0xFF2A1710) : Colors.white;
+
+  /// Ana metin — kart üstü başlık/fiyat gibi güçlü vurgular
+  Color get inkStrong =>
+      isDarkMode ? const Color(0xFFF3EAE2) : AppColors.ink;
+
+  /// İkincil vurgulu metin (açık temadaki koyu kahve karşılığı)
+  Color get inkMedium =>
+      isDarkMode ? const Color(0xFFD9C3AE) : AppColors.coffee;
+
+  /// Kart/çip kenarlıkları
+  Color get softBorder =>
+      isDarkMode ? Colors.white12 : const Color(0xFFE5DDD5);
+
+  /// Görsel yüklenirken gösterilen zemin
+  Color get imagePlaceholder =>
+      isDarkMode ? const Color(0xFF3A241A) : const Color(0xFFEFE6DD);
+
+  /// Stepper, pasif çip gibi hafif dolgu zeminleri
+  Color get softFill =>
+      isDarkMode ? const Color(0xFF3A241A) : const Color(0xFFF5EEE8);
+
+  /// Kart gölgesi — koyu temada gölge yerine hafif ayrışma
+  List<BoxShadow> get cardShadow => isDarkMode
+      ? const []
+      : AppColors.cardShadow;
+}
+
 class AppTheme {
   AppTheme._();
 

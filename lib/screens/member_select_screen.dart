@@ -29,7 +29,6 @@ class MemberSelectScreen extends StatelessWidget {
     final members = userProvider.registeredUsers;
 
     return Scaffold(
-      backgroundColor: AppColors.cream,
       appBar: AppBar(
         backgroundColor: AppColors.espresso,
         flexibleSpace: const DecoratedBox(
@@ -124,9 +123,9 @@ class _MemberCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.surfaceCard,
         borderRadius: BorderRadius.circular(14),
-        boxShadow: AppColors.cardShadow,
+        boxShadow: context.cardShadow,
       ),
       child: ListTile(
         onTap: onTap,
@@ -145,11 +144,11 @@ class _MemberCard extends StatelessWidget {
             borderRadius: BorderRadius.circular(12),
           ),
           child: Icon(icon,
-              color: highlight ? AppColors.coffee : Colors.white, size: 22),
+              color: highlight ? context.inkMedium : Colors.white, size: 22),
         ),
         title: Text(title,
-            style: const TextStyle(
-                fontWeight: FontWeight.bold, color: AppColors.espresso)),
+            style: TextStyle(
+                fontWeight: FontWeight.bold, color: context.inkStrong)),
         subtitle: subtitle != null
             ? Text(subtitle!,
                 style: const TextStyle(color: AppColors.muted, fontSize: 12))
@@ -163,9 +162,9 @@ class _MemberCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Text(trailing!,
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: AppColors.coffee,
+                        color: context.inkMedium,
                         fontSize: 13)),
               )
             : const Icon(Icons.chevron_right, color: AppColors.muted),

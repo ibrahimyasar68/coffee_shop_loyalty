@@ -45,7 +45,6 @@ class ProfileScreen extends StatelessWidget {
     final double progress = (points / nextLevel).clamp(0.0, 1.0);
 
     return Scaffold(
-      backgroundColor: AppColors.cream,
       body: CustomScrollView(
         slivers: [
           // ── HEADER ──────────────────────────────────────────
@@ -183,10 +182,10 @@ class ProfileScreen extends StatelessWidget {
                   // BİLGİLER
                   Text(
                     l.accountInfo,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.espresso,
+                      color: context.inkStrong,
                       letterSpacing: 0.3,
                     ),
                   ),
@@ -242,10 +241,10 @@ class ProfileScreen extends StatelessWidget {
                   // YÖNETİM & AYARLAR
                   Text(
                     l.manageSection,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.espresso,
+                      color: context.inkStrong,
                       letterSpacing: 0.3,
                     ),
                   ),
@@ -512,7 +511,7 @@ class _InfoCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.surfaceCard,
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
@@ -528,7 +527,7 @@ class _InfoCard extends StatelessWidget {
             width: 38,
             height: 38,
             decoration: BoxDecoration(
-              color: const Color(0xFFFAF0E6),
+              color: context.softFill,
               borderRadius: BorderRadius.circular(10),
             ),
             child: Icon(icon, color: AppColors.mocha, size: 20),
@@ -548,10 +547,10 @@ class _InfoCard extends StatelessWidget {
               const SizedBox(height: 2),
               Text(
                 value,
-                style: const TextStyle(
+                style: TextStyle(
                   fontSize: 14,
                   fontWeight: FontWeight.w600,
-                  color: AppColors.espresso,
+                  color: context.inkStrong,
                 ),
               ),
             ],
@@ -579,9 +578,9 @@ class _MenuTile extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.surfaceCard,
         borderRadius: BorderRadius.circular(14),
-        boxShadow: AppColors.cardShadow,
+        boxShadow: context.cardShadow,
       ),
       child: ListTile(
         onTap: onTap,
@@ -591,16 +590,16 @@ class _MenuTile extends StatelessWidget {
           width: 38,
           height: 38,
           decoration: BoxDecoration(
-            color: const Color(0xFFFAF0E6),
+            color: context.softFill,
             borderRadius: BorderRadius.circular(10),
           ),
           child: Icon(icon, color: AppColors.mocha, size: 20),
         ),
         title: Text(label,
-            style: const TextStyle(
+            style: TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: AppColors.espresso)),
+                color: context.inkStrong)),
         trailing: const Icon(Icons.chevron_right, color: AppColors.muted),
       ),
     );

@@ -119,7 +119,6 @@ class _AdminScreenState extends State<AdminScreen>
     final totalPoints = users.fold(0, (s, u) => s + u.points);
 
     return Scaffold(
-      backgroundColor: AppColors.cream,
       appBar: AppBar(
         backgroundColor: AppColors.espresso,
         flexibleSpace: const DecoratedBox(
@@ -223,7 +222,7 @@ class _SummaryTab extends StatelessWidget {
                   icon: Icons.coffee,
                   label: l.statProducts,
                   value: productCount,
-                  color: AppColors.coffee,
+                  color: context.inkMedium,
                 ),
               ),
               const SizedBox(width: 12),
@@ -246,7 +245,7 @@ class _SummaryTab extends StatelessWidget {
                   label: l.statMenuTotal,
                   value: totalRevenue.round(),
                   suffix: ' TL',
-                  color: AppColors.espresso,
+                  color: context.inkStrong,
                 ),
               ),
               const SizedBox(width: 12),
@@ -267,10 +266,10 @@ class _SummaryTab extends StatelessWidget {
           // En yüksek puanlı üyeler
           Text(
             l.loyalCustomers,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: AppColors.espresso,
+              color: context.inkStrong,
             ),
           ),
           const SizedBox(height: 12),
@@ -285,7 +284,7 @@ class _SummaryTab extends StatelessWidget {
                 margin: const EdgeInsets.only(bottom: 10),
                 padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: context.surfaceCard,
                   borderRadius: BorderRadius.circular(14),
                   boxShadow: [
                     BoxShadow(
@@ -305,9 +304,9 @@ class _SummaryTab extends StatelessWidget {
                         children: [
                           Text(
                             '${user.name} ${user.surname}',
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: AppColors.espresso,
+                              color: context.inkStrong,
                             ),
                           ),
                           Text(
@@ -329,9 +328,9 @@ class _SummaryTab extends StatelessWidget {
                       ),
                       child: Text(
                         l.pointsShort(user.points),
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          color: AppColors.coffee,
+                          color: context.inkMedium,
                           fontSize: 13,
                         ),
                       ),
@@ -346,10 +345,10 @@ class _SummaryTab extends StatelessWidget {
           // Kategoriye göre ürün dağılımı
           Text(
             l.productsByCategory,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: AppColors.espresso,
+              color: context.inkStrong,
             ),
           ),
           const SizedBox(height: 12),
@@ -471,7 +470,7 @@ class _ProductAdminCard extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.surfaceCard,
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
@@ -493,7 +492,7 @@ class _ProductAdminCard extends StatelessWidget {
             placeholder: (_, __) => Container(
               width: 52,
               height: 52,
-              color: const Color(0xFFEFE6DD),
+              color: context.imagePlaceholder,
             ),
             errorWidget: (_, __, ___) => Container(
               width: 52,
@@ -505,9 +504,9 @@ class _ProductAdminCard extends StatelessWidget {
         ),
         title: Text(
           coffee.name,
-          style: const TextStyle(
+          style: TextStyle(
             fontWeight: FontWeight.bold,
-            color: AppColors.espresso,
+            color: context.inkStrong,
             fontSize: 14,
           ),
         ),
@@ -515,8 +514,8 @@ class _ProductAdminCard extends StatelessWidget {
           children: [
             Text(
               '${coffee.price.toStringAsFixed(0)} TL',
-              style: const TextStyle(
-                  color: AppColors.coffee, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                  color: context.inkMedium, fontWeight: FontWeight.w600),
             ),
             const SizedBox(width: 8),
             Container(
@@ -568,7 +567,7 @@ class _ProductAdminCard extends StatelessWidget {
       builder: (_) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title:
-            Text(l.deleteProduct, style: const TextStyle(color: AppColors.espresso)),
+            Text(l.deleteProduct, style: TextStyle(color: context.inkStrong)),
         content: Text(l.deleteConfirm(coffee.name)),
         actions: [
           TextButton(
@@ -611,7 +610,7 @@ class _UserAdminCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.surfaceCard,
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
@@ -650,9 +649,9 @@ class _UserAdminCard extends StatelessWidget {
               children: [
                 Text(
                   '${user.name} ${user.surname}',
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: AppColors.espresso,
+                    color: context.inkStrong,
                     fontSize: 14,
                   ),
                 ),
@@ -683,9 +682,9 @@ class _UserAdminCard extends StatelessWidget {
                 ),
                 child: Text(
                   l.pointsShort(user.points),
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontWeight: FontWeight.bold,
-                    color: AppColors.coffee,
+                    color: context.inkMedium,
                     fontSize: 13,
                   ),
                 ),
@@ -730,7 +729,7 @@ class _UserAdminCard extends StatelessWidget {
       builder: (_) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title:
-            Text(l.deleteMember, style: const TextStyle(color: AppColors.espresso)),
+            Text(l.deleteMember, style: TextStyle(color: context.inkStrong)),
         content: Text(l.deleteConfirm('${user.name} ${user.surname}')),
         actions: [
           TextButton(
@@ -822,9 +821,10 @@ class _AddProductSheetState extends State<_AddProductSheet> {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     return Container(
-      decoration: const BoxDecoration(
-        color: AppColors.cream,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        borderRadius:
+            const BorderRadius.vertical(top: Radius.circular(24)),
       ),
       padding: EdgeInsets.fromLTRB(
           20, 20, 20, MediaQuery.of(context).viewInsets.bottom + 20),
@@ -847,10 +847,10 @@ class _AddProductSheetState extends State<_AddProductSheet> {
             const SizedBox(height: 16),
             Text(
               l.newProduct,
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: AppColors.espresso,
+                color: context.inkStrong,
               ),
             ),
             const SizedBox(height: 16),
@@ -887,13 +887,14 @@ class _AddProductSheetState extends State<_AddProductSheet> {
                       margin: const EdgeInsets.symmetric(horizontal: 4),
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       decoration: BoxDecoration(
-                        color:
-                            isSelected ? AppColors.espresso : Colors.white,
+                        color: isSelected
+                            ? Theme.of(context).colorScheme.primary
+                            : context.surfaceCard,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
                           color: isSelected
-                              ? AppColors.espresso
-                              : const Color(0xFFE5DDD5),
+                              ? Theme.of(context).colorScheme.primary
+                              : context.softBorder,
                         ),
                       ),
                       child: Text(
@@ -903,8 +904,8 @@ class _AddProductSheetState extends State<_AddProductSheet> {
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
                           color: isSelected
-                              ? Colors.white
-                              : AppColors.espresso,
+                              ? Theme.of(context).colorScheme.onPrimary
+                              : context.inkStrong,
                         ),
                       ),
                     ),
@@ -964,7 +965,7 @@ class _StatCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.surfaceCard,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -1027,7 +1028,7 @@ class _CategoryBar extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.surfaceCard,
         borderRadius: BorderRadius.circular(12),
       ),
       child: Column(
@@ -1037,8 +1038,8 @@ class _CategoryBar extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(l.categoryLabel(category),
-                  style: const TextStyle(
-                      fontWeight: FontWeight.w600, color: AppColors.espresso)),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600, color: context.inkStrong)),
               Text(l.productCount(count),
                   style:
                       const TextStyle(fontSize: 12, color: AppColors.muted)),
@@ -1050,7 +1051,7 @@ class _CategoryBar extends StatelessWidget {
             child: LinearProgressIndicator(
               value: ratio,
               minHeight: 6,
-              backgroundColor: const Color(0xFFE5DDD5),
+              backgroundColor: context.softFill,
               valueColor:
                   const AlwaysStoppedAnimation<Color>(AppColors.mocha),
             ),
@@ -1104,16 +1105,16 @@ class _SheetField extends StatelessWidget {
           labelText: label,
           labelStyle: const TextStyle(color: AppColors.muted, fontSize: 13),
           filled: true,
-          fillColor: Colors.white,
+          fillColor: context.surfaceCard,
           contentPadding:
               const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Color(0xFFE5DDD5)),
+            borderSide: BorderSide(color: context.softBorder),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
-            borderSide: const BorderSide(color: Color(0xFFE5DDD5)),
+            borderSide: BorderSide(color: context.softBorder),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(12),
@@ -1206,9 +1207,10 @@ class _EditProductSheetState extends State<_EditProductSheet> {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     return Container(
-      decoration: const BoxDecoration(
-        color: AppColors.cream,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        borderRadius:
+            const BorderRadius.vertical(top: Radius.circular(24)),
       ),
       padding: EdgeInsets.fromLTRB(
           20, 20, 20, MediaQuery.of(context).viewInsets.bottom + 20),
@@ -1242,7 +1244,7 @@ class _EditProductSheetState extends State<_EditProductSheet> {
                     placeholder: (_, __) => Container(
                       width: 48,
                       height: 48,
-                      color: const Color(0xFFEFE6DD),
+                      color: context.imagePlaceholder,
                     ),
                     errorWidget: (_, __, ___) => Container(
                       width: 48,
@@ -1293,13 +1295,14 @@ class _EditProductSheetState extends State<_EditProductSheet> {
                       margin: const EdgeInsets.symmetric(horizontal: 4),
                       padding: const EdgeInsets.symmetric(vertical: 10),
                       decoration: BoxDecoration(
-                        color:
-                            isSelected ? AppColors.espresso : Colors.white,
+                        color: isSelected
+                            ? Theme.of(context).colorScheme.primary
+                            : context.surfaceCard,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
                           color: isSelected
-                              ? AppColors.espresso
-                              : const Color(0xFFE5DDD5),
+                              ? Theme.of(context).colorScheme.primary
+                              : context.softBorder,
                         ),
                       ),
                       child: Text(
@@ -1309,8 +1312,8 @@ class _EditProductSheetState extends State<_EditProductSheet> {
                           fontSize: 13,
                           fontWeight: FontWeight.bold,
                           color: isSelected
-                              ? Colors.white
-                              : AppColors.espresso,
+                              ? Theme.of(context).colorScheme.onPrimary
+                              : context.inkStrong,
                         ),
                       ),
                     ),
@@ -1420,9 +1423,10 @@ class _EditUserSheetState extends State<_EditUserSheet> {
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     return Container(
-      decoration: const BoxDecoration(
-        color: AppColors.cream,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      decoration: BoxDecoration(
+        color: Theme.of(context).scaffoldBackgroundColor,
+        borderRadius:
+            const BorderRadius.vertical(top: Radius.circular(24)),
       ),
       padding: EdgeInsets.fromLTRB(
           20, 20, 20, MediaQuery.of(context).viewInsets.bottom + 20),

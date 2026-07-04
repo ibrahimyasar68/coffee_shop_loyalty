@@ -35,7 +35,6 @@ class OrderHistoryScreen extends StatelessWidget {
     final orders = context.watch<OrderProvider>().ordersForUser(fullName);
 
     return Scaffold(
-      backgroundColor: AppColors.cream,
       appBar: AppBar(
         backgroundColor: AppColors.espresso,
         title: Text(
@@ -80,7 +79,7 @@ class OrderHistoryScreen extends StatelessWidget {
       builder: (_) => AlertDialog(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
         title: Text(l.clearHistory,
-            style: const TextStyle(color: AppColors.espresso)),
+            style: TextStyle(color: context.inkStrong)),
         content: Text(l.clearHistoryConfirm),
         actions: [
           TextButton(
@@ -130,7 +129,7 @@ class _OrderCardState extends State<_OrderCard> {
     return Container(
       margin: const EdgeInsets.only(bottom: 14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: context.surfaceCard,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
@@ -177,9 +176,9 @@ class _OrderCardState extends State<_OrderCard> {
                       children: [
                         Text(
                           widget.dateLabel,
-                          style: const TextStyle(
+                          style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: AppColors.espresso,
+                              color: context.inkStrong,
                               fontSize: 14),
                         ),
                         const SizedBox(height: 3),
@@ -197,9 +196,9 @@ class _OrderCardState extends State<_OrderCard> {
                     children: [
                       Text(
                         formatPrice(order.totalPrice),
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: AppColors.coffee,
+                            color: context.inkMedium,
                             fontSize: 15),
                       ),
                       const SizedBox(height: 3),
@@ -241,8 +240,8 @@ class _OrderCardState extends State<_OrderCard> {
             firstChild: const SizedBox.shrink(),
             secondChild: Column(
               children: [
-                const Divider(
-                    color: Color(0xFFE5DDD5),
+                Divider(
+                    color: context.softBorder,
                     height: 1,
                     indent: 14,
                     endIndent: 14),
@@ -253,15 +252,15 @@ class _OrderCardState extends State<_OrderCard> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const Text('Toplam',
+                      Text('Toplam',
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: AppColors.espresso)),
+                              color: context.inkStrong)),
                       Text(
                         formatPrice(order.totalPrice),
-                        style: const TextStyle(
+                        style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: AppColors.coffee,
+                            color: context.inkMedium,
                             fontSize: 15),
                       ),
                     ],
@@ -301,7 +300,7 @@ class _OrderItemRow extends StatelessWidget {
               placeholder: (_, __) => Container(
                 width: 40,
                 height: 40,
-                color: const Color(0xFFEFE6DD),
+                color: context.imagePlaceholder,
               ),
               errorWidget: (_, __, ___) => Container(
                 width: 40,
@@ -321,9 +320,9 @@ class _OrderItemRow extends StatelessWidget {
                     item.size == 'Orta'
                         ? item.coffeeName
                         : '${item.coffeeName} (${l.size(item.size)})',
-                    style: const TextStyle(
+                    style: TextStyle(
                         fontWeight: FontWeight.w600,
-                        color: AppColors.espresso,
+                        color: context.inkStrong,
                         fontSize: 13)),
                 Text(l.quantityUnit(item.quantity),
                     style: const TextStyle(
@@ -333,9 +332,9 @@ class _OrderItemRow extends StatelessWidget {
           ),
           Text(
             formatPrice((item.price * item.quantity)),
-            style: const TextStyle(
+            style: TextStyle(
                 fontWeight: FontWeight.w600,
-                color: AppColors.coffee,
+                color: context.inkMedium,
                 fontSize: 13),
           ),
         ],
@@ -370,10 +369,10 @@ class _EmptyHistory extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             l.noOrders,
-            style: const TextStyle(
+            style: TextStyle(
                 fontSize: 17,
                 fontWeight: FontWeight.bold,
-                color: AppColors.espresso),
+                color: context.inkStrong),
           ),
           const SizedBox(height: 8),
           Text(

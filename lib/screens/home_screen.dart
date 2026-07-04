@@ -40,7 +40,6 @@ class HomeScreen extends StatelessWidget {
         if (!didPop) _logout(context);
       },
       child: Scaffold(
-        backgroundColor: AppColors.cream,
         bottomNavigationBar: const BottomBar(current: 0),
         appBar: AppBar(
           backgroundColor: AppColors.espresso,
@@ -208,12 +207,14 @@ class _CategoryChips extends StatelessWidget {
               alignment: Alignment.center,
               padding: const EdgeInsets.symmetric(horizontal: 16),
               decoration: BoxDecoration(
-                color: isSelected ? AppColors.espresso : Colors.white,
+                color: isSelected
+                    ? Theme.of(context).colorScheme.primary
+                    : context.surfaceCard,
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(
                   color: isSelected
-                      ? AppColors.espresso
-                      : const Color(0xFFE5DDD5),
+                      ? Theme.of(context).colorScheme.primary
+                      : context.softBorder,
                 ),
               ),
               child: Text(
@@ -221,7 +222,9 @@ class _CategoryChips extends StatelessWidget {
                 style: TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.w600,
-                  color: isSelected ? Colors.white : AppColors.coffee,
+                  color: isSelected
+                      ? Theme.of(context).colorScheme.onPrimary
+                      : context.inkMedium,
                 ),
               ),
             ),
@@ -263,9 +266,9 @@ class _ProductGridCard extends StatelessWidget {
       ),
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.surfaceCard,
           borderRadius: BorderRadius.circular(16),
-          boxShadow: AppColors.cardShadow,
+          boxShadow: context.cardShadow,
         ),
         clipBehavior: Clip.antiAlias,
         child: Column(
@@ -278,7 +281,7 @@ class _ProductGridCard extends StatelessWidget {
                 imageUrl: coffee.imagePath,
                 fit: BoxFit.cover,
                 placeholder: (_, __) =>
-                    Container(color: const Color(0xFFEFE6DD)),
+                    Container(color: context.imagePlaceholder),
                 errorWidget: (_, __, ___) => Container(
                   color: AppColors.coffee,
                   child: const Icon(Icons.coffee,
@@ -297,10 +300,10 @@ class _ProductGridCard extends StatelessWidget {
                       coffee.name,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
-                        color: AppColors.espresso,
+                        color: context.inkStrong,
                       ),
                     ),
                     const SizedBox(height: 2),
@@ -317,10 +320,10 @@ class _ProductGridCard extends StatelessWidget {
                       children: [
                         Text(
                           formatPrice(coffee.price),
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
-                            color: AppColors.espresso,
+                            color: context.inkStrong,
                           ),
                         ),
                         ScaleTap(
@@ -329,11 +332,16 @@ class _ProductGridCard extends StatelessWidget {
                             width: 30,
                             height: 30,
                             decoration: BoxDecoration(
-                              color: AppColors.espresso,
+                              color: context.isDarkMode
+                                  ? AppColors.caramel
+                                  : AppColors.espresso,
                               borderRadius: BorderRadius.circular(9),
                             ),
-                            child: const Icon(Icons.add,
-                                color: AppColors.caramel, size: 18),
+                            child: Icon(Icons.add,
+                                color: context.isDarkMode
+                                    ? AppColors.espresso
+                                    : AppColors.caramel,
+                                size: 18),
                           ),
                         ),
                       ],

@@ -88,7 +88,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
     final coffee = widget.coffee;
 
     return Scaffold(
-      backgroundColor: AppColors.cream,
       body: CustomScrollView(
         slivers: [
           // ── HERO GÖRSEL ─────────────────────────────────────
@@ -186,10 +185,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                           Expanded(
                             child: Text(
                               coffee.name,
-                              style: const TextStyle(
+                              style: TextStyle(
                                 fontSize: 28,
                                 fontWeight: FontWeight.bold,
-                                color: AppColors.espresso,
+                                color: context.inkStrong,
                                 height: 1.1,
                               ),
                             ),
@@ -199,10 +198,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                             children: [
                               Text(
                                 formatPrice(_sizePrice),
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
-                                  color: AppColors.coffee,
+                                  color: context.inkMedium,
                                 ),
                               ),
                               Container(
@@ -241,7 +240,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                       ],
 
                       const SizedBox(height: 24),
-                      const Divider(color: Color(0xFFE5DDD5)),
+                      Divider(color: context.softBorder),
                       const SizedBox(height: 20),
 
                       // BOYUT SEÇİMİ
@@ -250,10 +249,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                         children: [
                           Text(
                             l.selectSize,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
-                              color: AppColors.espresso,
+                              color: context.inkStrong,
                             ),
                           ),
                           Text(
@@ -298,12 +297,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                                 decoration: BoxDecoration(
                                   color: isSelected
                                       ? AppColors.espresso
-                                      : Colors.white,
+                                      : context.surfaceCard,
                                   borderRadius: BorderRadius.circular(14),
                                   border: Border.all(
                                     color: isSelected
-                                        ? AppColors.espresso
-                                        : const Color(0xFFE5DDD5),
+                                        ? AppColors.caramel
+                                        : context.softBorder,
                                   ),
                                   boxShadow: isSelected
                                       ? [
@@ -325,7 +324,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                                         fontSize: 13,
                                         color: isSelected
                                             ? Colors.white
-                                            : AppColors.espresso,
+                                            : context.inkStrong,
                                       ),
                                     ),
                                     const SizedBox(height: 3),
@@ -336,7 +335,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                                         fontWeight: FontWeight.w600,
                                         color: isSelected
                                             ? AppColors.caramel
-                                            : AppColors.coffee,
+                                            : context.inkMedium,
                                       ),
                                     ),
                                     Text(
@@ -364,15 +363,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                         children: [
                           Text(
                             l.quantity,
-                            style: const TextStyle(
+                            style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
-                              color: AppColors.espresso,
+                              color: context.inkStrong,
                             ),
                           ),
                           Container(
                             decoration: BoxDecoration(
-                              color: Colors.white,
+                              color: context.surfaceCard,
                               borderRadius: BorderRadius.circular(14),
                               boxShadow: [
                                 BoxShadow(
@@ -398,10 +397,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                                       horizontal: 20),
                                   child: Text(
                                     '$_quantity',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
-                                      color: AppColors.espresso,
+                                      color: context.inkStrong,
                                     ),
                                   ),
                                 ),
@@ -421,7 +420,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                       Container(
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF0E6DA),
+                          color: context.softFill,
                           borderRadius: BorderRadius.circular(14),
                         ),
                         child: Row(
@@ -439,10 +438,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                                 ),
                                 Text(
                                   formatPrice(_totalPrice),
-                                  style: const TextStyle(
+                                  style: TextStyle(
                                     fontSize: 22,
                                     fontWeight: FontWeight.bold,
-                                    color: AppColors.espresso,
+                                    color: context.inkStrong,
                                   ),
                                 ),
                               ],
@@ -457,9 +456,9 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                               ),
                               child: Text(
                                 l.willEarnPoints(_totalPoints),
-                                style: const TextStyle(
+                                style: TextStyle(
                                   fontSize: 11,
-                                  color: AppColors.coffee,
+                                  color: context.inkMedium,
                                   fontWeight: FontWeight.w600,
                                 ),
                               ),
@@ -552,10 +551,10 @@ class _QtyButton extends StatelessWidget {
         width: 40,
         height: 40,
         decoration: BoxDecoration(
-          color: AppColors.cream,
+          color: context.softFill,
           borderRadius: BorderRadius.circular(12),
         ),
-        child: Icon(icon, size: 18, color: AppColors.espresso),
+        child: Icon(icon, size: 18, color: context.inkStrong),
       ),
     );
   }

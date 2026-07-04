@@ -22,7 +22,6 @@ class CartScreen extends StatelessWidget {
     final lines = cartProvider.groupedCart;
 
     return Scaffold(
-      backgroundColor: AppColors.cream,
       appBar: AppBar(
         backgroundColor: AppColors.espresso,
         flexibleSpace: const DecoratedBox(
@@ -60,9 +59,9 @@ class CartScreen extends StatelessWidget {
                   child: Container(
                     margin: const EdgeInsets.only(bottom: 12),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: context.surfaceCard,
                       borderRadius: BorderRadius.circular(14),
-                      boxShadow: AppColors.cardShadow,
+                      boxShadow: context.cardShadow,
                     ),
                     padding:
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
@@ -78,7 +77,7 @@ class CartScreen extends StatelessWidget {
                             placeholder: (_, __) => Container(
                                 width: 52,
                                 height: 52,
-                                color: const Color(0xFFEFE6DD)),
+                                color: context.imagePlaceholder),
                             errorWidget: (_, __, ___) => Container(
                               width: 52,
                               height: 52,
@@ -100,15 +99,15 @@ class CartScreen extends StatelessWidget {
                                     : '${item.name} (${l.size(item.size)})',
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
+                                style: TextStyle(
                                     fontWeight: FontWeight.bold,
-                                    color: AppColors.espresso),
+                                    color: context.inkStrong),
                               ),
                               const SizedBox(height: 4),
                               Text(
                                 '${formatPrice(line.lineTotal)}  ·  +${item.points * line.quantity}p',
-                                style: const TextStyle(
-                                    color: AppColors.coffee,
+                                style: TextStyle(
+                                    color: context.inkMedium,
                                     fontWeight: FontWeight.w600,
                                     fontSize: 13),
                               ),
@@ -132,7 +131,7 @@ class CartScreen extends StatelessWidget {
       bottomSheet: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: context.surfaceCard,
           boxShadow: [
             BoxShadow(
               color: AppColors.espresso.withValues(alpha: 0.1),
@@ -153,10 +152,10 @@ class CartScreen extends StatelessWidget {
                         const TextStyle(color: AppColors.muted, fontSize: 13)),
                 Text(
                   formatPrice(cartProvider.totalCartPrice),
-                  style: const TextStyle(
+                  style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: AppColors.espresso),
+                      color: context.inkStrong),
                 ),
               ],
             ),
@@ -254,7 +253,7 @@ class _QtyStepper extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: const Color(0xFFF5EEE8),
+        color: context.softFill,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(
@@ -262,7 +261,7 @@ class _QtyStepper extends StatelessWidget {
         children: [
           _btn(
             icon: quantity > 1 ? Icons.remove : Icons.delete_outline,
-            color: quantity > 1 ? AppColors.coffee : Colors.red,
+            color: quantity > 1 ? context.inkMedium : Colors.red,
             onTap: onMinus,
           ),
           ConstrainedBox(
@@ -270,13 +269,13 @@ class _QtyStepper extends StatelessWidget {
             child: Text(
               '$quantity',
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 15,
-                  color: AppColors.espresso),
+                  color: context.inkStrong),
             ),
           ),
-          _btn(icon: Icons.add, color: AppColors.coffee, onTap: onPlus),
+          _btn(icon: Icons.add, color: context.inkMedium, onTap: onPlus),
         ],
       ),
     );
