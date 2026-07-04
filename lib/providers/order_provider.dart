@@ -63,6 +63,36 @@ class OrderProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Ödül kullanımını geçmişe kaydeder — 0 TL'lik, tek satırlık sipariş.
+  /// [itemName] görüntülenecek metin olarak çağıran taraftan (yerelleşmiş)
+  /// gelir; geçmişte kalıcı olduğundan kayıt anındaki dille saklanır.
+  Future<void> saveRewardRedemption({
+    required String userName,
+    required String itemName,
+  }) async {
+    final box = _orderBox;
+    if (box == null) return;
+
+    final order = Order(
+      date: DateTime.now(),
+      items: [
+        OrderItem(
+          coffeeName: itemName,
+          price: 0,
+          points: 0,
+          imagePath: '',
+          quantity: 1,
+        ),
+      ],
+      totalPrice: 0,
+      totalPoints: 0,
+      userName: userName,
+    );
+
+    await box.add(order);
+    notifyListeners();
+  }
+
   // Tüm geçmişi temizle
   Future<void> clearAll() async {
     await _orderBox?.clear();

@@ -288,5 +288,47 @@ void main() {
       expect(box.get('5559999'), isNotNull);
       expect(box.get('5559999')!.phone, '5559999');
     });
+
+    test('redeemReward 100+ puanı olan üyeden puan düşer', () async {
+      final users = UserProvider();
+      await users.addUser(newUser(phone: '5550001', points: 230));
+      users.loginWithUser(
+          users.registeredUsers.firstWhere((u) => u.phone == '5550001'));
+
+      expect(users.redeemReward(), isTrue);
+      expect(users.currentUser!.points, 130);
+      // Kalıcılık kontrolü
+      expect(Hive.box<User>('user_box').get('5550001')!.points, 130);
+    });
+
+    test('redeemReward puan yetersizse veya misafirse reddeder', () async {
+      final users = UserProvider();
+      await users.addUser(newUser(phone: '5550001', points: 99));
+      users.loginWithUser(
+          users.registeredUsers.firstWhere((u) => u.phone == '5550001'));
+
+      expect(users.redeemReward(), isFalse);
+      expect(users.currentUser!.points, 99); // değişmedi
+
+      users.loginAsGuest();
+      expect(users.redeemReward(), isFalse);
+    });
+  });
+
+  group('Ödül kullanımı (OrderProvider)', () {
+    test('saveRewardRedemption geçmişe 0 TL/0 puanlık kayıt ekler', () async {
+      final orders = OrderProvider();
+      await orders.saveRewardRedemption(
+        userName: 'Ali Veli',
+        itemName: '🎁 Bedava Kahve (Ödül)',
+      );
+
+      final list = orders.ordersForUser('Ali Veli');
+      expect(list.length, 1);
+      expect(list.first.totalPrice, 0);
+      expect(list.first.totalPoints, 0);
+      expect(list.first.items.single.coffeeName, '🎁 Bedava Kahve (Ödül)');
+      expect(list.first.items.single.quantity, 1);
+    });
   });
 }

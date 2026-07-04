@@ -201,22 +201,25 @@ class _OrderCardState extends State<_OrderCard> {
                             color: context.inkMedium,
                             fontSize: 15),
                       ),
-                      const SizedBox(height: 3),
-                      Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 7, vertical: 2),
-                        decoration: BoxDecoration(
-                          color: AppColors.caramel.withValues(alpha: 0.2),
-                          borderRadius: BorderRadius.circular(8),
+                      // Ödül kullanımı gibi 0 puanlık kayıtlarda rozet gereksiz
+                      if (order.totalPoints > 0) ...[
+                        const SizedBox(height: 3),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 7, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: AppColors.caramel.withValues(alpha: 0.2),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Text(
+                            l.pointsEarned(order.totalPoints),
+                            style: const TextStyle(
+                                fontSize: 10,
+                                color: AppColors.mocha,
+                                fontWeight: FontWeight.w600),
+                          ),
                         ),
-                        child: Text(
-                          l.pointsEarned(order.totalPoints),
-                          style: const TextStyle(
-                              fontSize: 10,
-                              color: AppColors.mocha,
-                              fontWeight: FontWeight.w600),
-                        ),
-                      ),
+                      ],
                     ],
                   ),
                   const SizedBox(width: 8),

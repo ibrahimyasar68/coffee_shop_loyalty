@@ -416,6 +416,30 @@ abstract class AppLocalizations {
   /// **'Bedava kahve hakkın hazır! 🎉'**
   String get freeCoffeeReady;
 
+  /// No description provided for @redeemReward.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ödülü Kullan'**
+  String get redeemReward;
+
+  /// No description provided for @redeemConfirmMessage.
+  ///
+  /// In tr, this message translates to:
+  /// **'100 puan karşılığında 1 bedava kahve kullanılacak. Onaylıyor musun?'**
+  String get redeemConfirmMessage;
+
+  /// No description provided for @rewardRedeemed.
+  ///
+  /// In tr, this message translates to:
+  /// **'Afiyet olsun! Bedava kahven kullanıldı. ☕'**
+  String get rewardRedeemed;
+
+  /// No description provided for @freeCoffeeItem.
+  ///
+  /// In tr, this message translates to:
+  /// **'🎁 Bedava Kahve (Ödül)'**
+  String get freeCoffeeItem;
+
   /// No description provided for @accountInfo.
   ///
   /// In tr, this message translates to:

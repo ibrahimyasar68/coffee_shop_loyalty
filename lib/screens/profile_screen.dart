@@ -1,4 +1,5 @@
 import 'package:coffee_shop_loyalty/l10n/app_localizations.dart';
+import 'package:coffee_shop_loyalty/providers/order_provider.dart';
 import 'package:coffee_shop_loyalty/providers/user_provider.dart';
 import 'package:coffee_shop_loyalty/screens/add_product_screen.dart';
 import 'package:coffee_shop_loyalty/screens/admin_gate_screen.dart';
@@ -12,6 +13,48 @@ import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
+
+  // Ödül kullanımı: onay → puan düş → geçmişe kaydet → bildir
+  Future<void> _redeemReward(BuildContext context) async {
+    final l = AppLocalizations.of(context);
+    final ok = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        title: Text(l.redeemReward),
+        content: Text(l.redeemConfirmMessage),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx, false),
+            child: Text(l.cancel),
+          ),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(minimumSize: const Size(88, 44)),
+            onPressed: () => Navigator.pop(ctx, true),
+            child: Text(l.redeemReward),
+          ),
+        ],
+      ),
+    );
+    if (ok != true || !context.mounted) return;
+
+    final userProvider = context.read<UserProvider>();
+    final orderProvider = context.read<OrderProvider>();
+    final user = userProvider.currentUser;
+    final name = '${user?.name ?? ''} ${user?.surname ?? ''}'.trim();
+
+    if (userProvider.redeemReward()) {
+      await orderProvider.saveRewardRedemption(
+        userName: name,
+        itemName: l.freeCoffeeItem,
+      );
+      if (context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(l.rewardRedeemed)),
+        );
+      }
+    }
+  }
 
   // Puana göre rozet seviyesi
   Map<String, dynamic> _getBadge(int points, AppLocalizations l) {
@@ -176,7 +219,14 @@ class ProfileScreen extends StatelessWidget {
                 children: [
                   // PUAN KARTI
                   _PointsCard(
-                      points: points, progress: progress, nextLevel: nextLevel),
+                    points: points,
+                    progress: progress,
+                    nextLevel: nextLevel,
+                    // Ödül yalnızca kayıtlı üye girişinde kullanılabilir
+                    onRedeem: context.watch<UserProvider>().isLoggedIn
+                        ? () => _redeemReward(context)
+                        : null,
+                  ),
                   const SizedBox(height: 20),
 
                   // BİLGİLER
@@ -322,11 +372,13 @@ class _PointsCard extends StatelessWidget {
   final int points;
   final double progress;
   final int nextLevel;
+  final VoidCallback? onRedeem;
 
   const _PointsCard({
     required this.points,
     required this.progress,
     required this.nextLevel,
+    this.onRedeem,
   });
 
   @override
@@ -420,7 +472,7 @@ class _PointsCard extends StatelessWidget {
           const SizedBox(height: 16),
           Divider(color: Colors.white.withValues(alpha: 0.12), height: 1),
           const SizedBox(height: 14),
-          _RewardGoal(points: points),
+          _RewardGoal(points: points, onRedeem: onRedeem),
         ],
       ),
     );
@@ -430,17 +482,18 @@ class _PointsCard extends StatelessWidget {
 // ── BEDAVA KAHVE ÖDÜL HEDEFİ ───────────────────────────────────
 class _RewardGoal extends StatelessWidget {
   final int points;
-  const _RewardGoal({required this.points});
+  final VoidCallback? onRedeem;
+  const _RewardGoal({required this.points, this.onRedeem});
 
-  // Her [_threshold] puanda bir bedava kahve hakkı
-  static const _threshold = 100;
+  // Her [_threshold] puan 1 bedava kahve hakkı; kullanım puandan düşer
+  static const _threshold = UserProvider.rewardCost;
 
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
+    final ready = points >= _threshold; // en az 1 hak birikti
     final inCycle = points % _threshold; // mevcut döngüdeki puan
-    final remaining = (_threshold - inCycle) % _threshold;
-    final ready = points > 0 && remaining == 0;
+    final remaining = _threshold - inCycle;
     final goalProgress = ready ? 1.0 : inCycle / _threshold;
 
     return Column(
@@ -488,6 +541,30 @@ class _RewardGoal extends StatelessWidget {
             fontWeight: ready ? FontWeight.bold : FontWeight.normal,
           ),
         ),
+        // Hak varsa ve üye girişi yapıldıysa kullanım butonu göster
+        if (ready && onRedeem != null) ...[
+          const SizedBox(height: 12),
+          SizedBox(
+            width: double.infinity,
+            height: 44,
+            child: ElevatedButton.icon(
+              onPressed: onRedeem,
+              icon: const Icon(Icons.card_giftcard_rounded, size: 18),
+              label: Text(
+                l.redeemReward,
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold, fontSize: 14),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.caramel,
+                foregroundColor: AppColors.espresso,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+            ),
+          ),
+        ],
       ],
     );
   }

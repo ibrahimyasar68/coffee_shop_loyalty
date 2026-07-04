@@ -182,6 +182,19 @@ class AppLocalizationsTr extends AppLocalizations {
   String get freeCoffeeReady => 'Bedava kahve hakkın hazır! 🎉';
 
   @override
+  String get redeemReward => 'Ödülü Kullan';
+
+  @override
+  String get redeemConfirmMessage =>
+      '100 puan karşılığında 1 bedava kahve kullanılacak. Onaylıyor musun?';
+
+  @override
+  String get rewardRedeemed => 'Afiyet olsun! Bedava kahven kullanıldı. ☕';
+
+  @override
+  String get freeCoffeeItem => '🎁 Bedava Kahve (Ödül)';
+
+  @override
   String get accountInfo => 'Hesap Bilgileri';
 
   @override

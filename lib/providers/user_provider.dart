@@ -47,6 +47,9 @@ class UserProvider extends ChangeNotifier {
     return _userBox?.get('misafir');
   }
 
+  /// Kayıtlı bir üyeyle mi giriş yapıldı (misafir değil)?
+  bool get isLoggedIn => _loggedInUser != null;
+
   // Misafir girişi
   void loginAsGuest() {
     _loggedInUser = null;
@@ -72,6 +75,20 @@ class UserProvider extends ChangeNotifier {
       user.save();
       notifyListeners();
     }
+  }
+
+  /// Her [rewardCost] puan 1 bedava kahve hakkı demektir.
+  static const rewardCost = 100;
+
+  /// Ödül kullanımı: giriş yapmış üyenin puanından [rewardCost] düşer.
+  /// Puan yetersizse veya misafirse false döner, hiçbir şey değişmez.
+  bool redeemReward() {
+    final user = _loggedInUser;
+    if (user == null || user.points < rewardCost) return false;
+    user.points -= rewardCost;
+    user.save();
+    notifyListeners();
+    return true;
   }
 
   // Yeni kullanıcı kaydı — telefon numarası key olarak kullanılıyor

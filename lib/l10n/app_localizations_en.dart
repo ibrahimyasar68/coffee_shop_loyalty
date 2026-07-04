@@ -181,6 +181,19 @@ class AppLocalizationsEn extends AppLocalizations {
   String get freeCoffeeReady => 'Your free coffee is ready! 🎉';
 
   @override
+  String get redeemReward => 'Redeem Reward';
+
+  @override
+  String get redeemConfirmMessage =>
+      '1 free coffee will be redeemed for 100 points. Do you confirm?';
+
+  @override
+  String get rewardRedeemed => 'Enjoy! Your free coffee has been redeemed. ☕';
+
+  @override
+  String get freeCoffeeItem => '🎁 Free Coffee (Reward)';
+
+  @override
   String get accountInfo => 'Account Info';
 
   @override
