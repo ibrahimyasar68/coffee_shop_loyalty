@@ -6,7 +6,16 @@ part 'coffee_model.g.dart'; // Bu dosya otomatik üretilecek
 /// Serbest metin yerine bu liste kullanılarak "sıcak/Sıcak/sicak" gibi
 /// büyük-küçük harf ve yazım farklarından doğan veri bölünmeleri önlenir.
 /// (Mevcut tohum verisiyle uyum için küçük harf.)
-const kProductCategories = ['sıcak', 'soğuk', 'tatlı'];
+const kProductCategories = ['sıcak', 'soğuk', 'tatlı', 'diğer'];
+
+/// Boyut (Küçük/Orta/Büyük) seçimi yalnızca içecek kategorilerinde
+/// anlamlıdır. Tatlı ve diğer ürünlerde tek boyut ('Orta') kullanılır.
+const kSizedCategories = ['sıcak', 'soğuk'];
+
+/// Verilen kategorinin boyut seçimi sunup sunmadığını döner.
+/// Yazım/harf farklarına dayanıklı olması için normalize edilir.
+bool categoryHasSizes(String category) =>
+    kSizedCategories.contains(category.toLowerCase().trim());
 
 @HiveType(typeId: 1) // Her modelin benzersiz bir id'si olmalı
 class Coffee extends HiveObject {

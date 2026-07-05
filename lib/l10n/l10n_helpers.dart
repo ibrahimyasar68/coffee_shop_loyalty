@@ -26,6 +26,9 @@ extension L10nDomain on AppLocalizations {
       case 'tatlı':
       case 'tatli':
         return categoryDessert;
+      case 'diğer':
+      case 'diger':
+        return categoryOther;
       default:
         return canonical;
     }

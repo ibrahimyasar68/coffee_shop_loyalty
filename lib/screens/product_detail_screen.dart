@@ -70,13 +70,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
   }
 
   String _getCategoryIcon(String category) {
-    switch (category.toLowerCase()) {
+    switch (category.toLowerCase().trim()) {
       case 'sıcak':
         return '☕';
       case 'soğuk':
         return '🧊';
       case 'tatlı':
         return '🍰';
+      case 'diğer':
+        return '🍴';
       default:
         return '☕';
     }
@@ -86,6 +88,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
     final coffee = widget.coffee;
+    // Boyut seçimi yalnızca içecek (sıcak/soğuk) kategorilerinde gösterilir.
+    final hasSizes = categoryHasSizes(coffee.category);
 
     return Scaffold(
       body: CustomScrollView(
@@ -116,8 +120,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                     fit: BoxFit.cover,
                     width: double.infinity,
                     height: double.infinity,
-                    placeholder: (_, __) =>
-                        Container(color: AppColors.coffee),
+                    placeholder: (_, __) => Container(color: AppColors.coffee),
                     errorWidget: (_, __, ___) => Container(
                       color: AppColors.coffee,
                       child: const Icon(Icons.coffee,
@@ -208,8 +211,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 8, vertical: 3),
                                 decoration: BoxDecoration(
-                                  color: AppColors.caramel
-                                      .withValues(alpha: 0.2),
+                                  color:
+                                      AppColors.caramel.withValues(alpha: 0.2),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Text(
@@ -243,119 +246,120 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                       Divider(color: context.softBorder),
                       const SizedBox(height: 20),
 
-                      // BOYUT SEÇİMİ
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            l.selectSize,
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: context.inkStrong,
-                            ),
-                          ),
-                          Text(
-                            '${formatPrice(_sizePrice)} · ${_sizePoints}p',
-                            style: const TextStyle(
-                              fontSize: 13,
-                              color: AppColors.mocha,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                      Row(
-                        children: _sizeLabels.map((sizeLabel) {
-                          final isSelected = _selectedSize == sizeLabel;
-                          final price =
-                              (coffee.price * _sizeMultiplier(sizeLabel));
-                          final pts =
-                              (coffee.points * _sizeMultiplier(sizeLabel))
-                                  .round();
-                          // Fiyat farkı etiketi
-                          String diffLabel;
-                          if (sizeLabel == 'Küçük') {
-                            diffLabel = '-%10';
-                          } else if (sizeLabel == 'Büyük') {
-                            diffLabel = '+%10';
-                          } else {
-                            diffLabel = l.baseLabel;
-                          }
-
-                          return Expanded(
-                            child: GestureDetector(
-                              onTap: () =>
-                                  setState(() => _selectedSize = sizeLabel),
-                              child: AnimatedContainer(
-                                duration: const Duration(milliseconds: 200),
-                                margin:
-                                    const EdgeInsets.symmetric(horizontal: 4),
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 12),
-                                decoration: BoxDecoration(
-                                  color: isSelected
-                                      ? AppColors.espresso
-                                      : context.surfaceCard,
-                                  borderRadius: BorderRadius.circular(14),
-                                  border: Border.all(
-                                    color: isSelected
-                                        ? AppColors.caramel
-                                        : context.softBorder,
-                                  ),
-                                  boxShadow: isSelected
-                                      ? [
-                                          BoxShadow(
-                                            color: AppColors.espresso
-                                                .withValues(alpha: 0.3),
-                                            blurRadius: 8,
-                                            offset: const Offset(0, 3),
-                                          )
-                                        ]
-                                      : [],
-                                ),
-                                child: Column(
-                                  children: [
-                                    Text(
-                                      l.size(sizeLabel),
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 13,
-                                        color: isSelected
-                                            ? Colors.white
-                                            : context.inkStrong,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 3),
-                                    Text(
-                                      formatPrice(price),
-                                      style: TextStyle(
-                                        fontSize: 11,
-                                        fontWeight: FontWeight.w600,
-                                        color: isSelected
-                                            ? AppColors.caramel
-                                            : context.inkMedium,
-                                      ),
-                                    ),
-                                    Text(
-                                      '$diffLabel · ${pts}p',
-                                      style: TextStyle(
-                                        fontSize: 9,
-                                        color: isSelected
-                                            ? Colors.white54
-                                            : AppColors.muted,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                      // BOYUT SEÇİMİ — yalnızca sıcak/soğuk kategorilerinde
+                      if (hasSizes) ...[
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              l.selectSize,
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                                color: context.inkStrong,
                               ),
                             ),
-                          );
-                        }).toList(),
-                      ),
+                            Text(
+                              '${formatPrice(_sizePrice)} · ${_sizePoints}p',
+                              style: const TextStyle(
+                                fontSize: 13,
+                                color: AppColors.mocha,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 12),
+                        Row(
+                          children: _sizeLabels.map((sizeLabel) {
+                            final isSelected = _selectedSize == sizeLabel;
+                            final price =
+                                (coffee.price * _sizeMultiplier(sizeLabel));
+                            final pts =
+                                (coffee.points * _sizeMultiplier(sizeLabel))
+                                    .round();
+                            // Fiyat farkı etiketi
+                            String diffLabel;
+                            if (sizeLabel == 'Küçük') {
+                              diffLabel = '-%10';
+                            } else if (sizeLabel == 'Büyük') {
+                              diffLabel = '+%10';
+                            } else {
+                              diffLabel = l.baseLabel;
+                            }
 
-                      const SizedBox(height: 24),
+                            return Expanded(
+                              child: GestureDetector(
+                                onTap: () =>
+                                    setState(() => _selectedSize = sizeLabel),
+                                child: AnimatedContainer(
+                                  duration: const Duration(milliseconds: 200),
+                                  margin:
+                                      const EdgeInsets.symmetric(horizontal: 4),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 12),
+                                  decoration: BoxDecoration(
+                                    color: isSelected
+                                        ? AppColors.espresso
+                                        : context.surfaceCard,
+                                    borderRadius: BorderRadius.circular(14),
+                                    border: Border.all(
+                                      color: isSelected
+                                          ? AppColors.caramel
+                                          : context.softBorder,
+                                    ),
+                                    boxShadow: isSelected
+                                        ? [
+                                            BoxShadow(
+                                              color: AppColors.espresso
+                                                  .withValues(alpha: 0.3),
+                                              blurRadius: 8,
+                                              offset: const Offset(0, 3),
+                                            )
+                                          ]
+                                        : [],
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Text(
+                                        l.size(sizeLabel),
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13,
+                                          color: isSelected
+                                              ? Colors.white
+                                              : context.inkStrong,
+                                        ),
+                                      ),
+                                      const SizedBox(height: 3),
+                                      Text(
+                                        formatPrice(price),
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          fontWeight: FontWeight.w600,
+                                          color: isSelected
+                                              ? AppColors.caramel
+                                              : context.inkMedium,
+                                        ),
+                                      ),
+                                      Text(
+                                        '$diffLabel · ${pts}p',
+                                        style: TextStyle(
+                                          fontSize: 9,
+                                          color: isSelected
+                                              ? Colors.white54
+                                              : AppColors.muted,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        ),
+                        const SizedBox(height: 24),
+                      ],
 
                       // ADET SEÇİMİ
                       Row(
@@ -450,8 +454,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 12, vertical: 6),
                               decoration: BoxDecoration(
-                                color: AppColors.caramel
-                                    .withValues(alpha: 0.3),
+                                color: AppColors.caramel.withValues(alpha: 0.3),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Text(
@@ -478,9 +481,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
                           }
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
-                              content: Text(
-                                  l.addedToCartQty(_quantity, coffee.name,
-                                      l.size(_selectedSize))),
+                              content: Text(hasSizes
+                                  ? l.addedToCartQty(_quantity, coffee.name,
+                                      l.size(_selectedSize))
+                                  : l.addedToCartQtyNoSize(
+                                      _quantity, coffee.name)),
                               backgroundColor: AppColors.espresso,
                               behavior: SnackBarBehavior.floating,
                               shape: RoundedRectangleBorder(

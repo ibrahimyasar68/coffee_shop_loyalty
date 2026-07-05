@@ -34,6 +34,10 @@
   "@addedToCart": { "placeholders": { "name": {}, "size": {} } },
   "addedToCartQty": "{quantity}× {name} ({size}) sepete eklendi!",
   "@addedToCartQty": { "placeholders": { "quantity": { "type": "int" }, "name": {}, "size": {} } },
+  "addedToCartNoSize": "{name} sepete eklendi!",
+  "@addedToCartNoSize": { "placeholders": { "name": {} } },
+  "addedToCartQtyNoSize": "{quantity}× {name} sepete eklendi!",
+  "@addedToCartQtyNoSize": { "placeholders": { "quantity": { "type": "int" }, "name": {} } },
 
   "sizeSmall": "Küçük",
   "sizeMedium": "Orta",
@@ -42,6 +46,7 @@
   "categoryHot": "Sıcak",
   "categoryCold": "Soğuk",
   "categoryDessert": "Tatlı",
+  "categoryOther": "Diğer",
 
   "cartTitle": "Sepetim",
   "cartEmpty": "Sepetiniz boş ☕",

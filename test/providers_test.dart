@@ -331,4 +331,26 @@ void main() {
       expect(list.first.items.single.quantity, 1);
     });
   });
+
+  group('Kategori boyut kuralı', () {
+    test('sıcak ve soğuk boyut sunar', () {
+      expect(categoryHasSizes('sıcak'), isTrue);
+      expect(categoryHasSizes('soğuk'), isTrue);
+    });
+
+    test('tatlı ve diğer boyut sunmaz', () {
+      expect(categoryHasSizes('tatlı'), isFalse);
+      expect(categoryHasSizes('diğer'), isFalse);
+    });
+
+    test('harf/boşluk farklarına dayanıklıdır', () {
+      expect(categoryHasSizes('  SICAK '.replaceAll('SICAK', 'Sıcak')), isTrue);
+      expect(categoryHasSizes('SOĞUK'), isTrue);
+    });
+
+    test('diğer kanonik kategoriler listesine eklendi', () {
+      expect(kProductCategories, contains('diğer'));
+      expect(kProductCategories.length, 4);
+    });
+  });
 }

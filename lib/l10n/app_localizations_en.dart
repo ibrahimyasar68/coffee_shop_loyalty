@@ -94,6 +94,16 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
+  String addedToCartNoSize(Object name) {
+    return '$name added to cart!';
+  }
+
+  @override
+  String addedToCartQtyNoSize(int quantity, Object name) {
+    return '$quantity× $name added to cart!';
+  }
+
+  @override
   String get sizeSmall => 'Small';
 
   @override
@@ -110,6 +120,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get categoryDessert => 'Dessert';
+
+  @override
+  String get categoryOther => 'Other';
 
   @override
   String get cartTitle => 'My Cart';

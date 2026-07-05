@@ -31,6 +31,8 @@
   "pointsShort": "{points} P",
   "addedToCart": "{name} ({size}) added to cart!",
   "addedToCartQty": "{quantity}× {name} ({size}) added to cart!",
+  "addedToCartNoSize": "{name} added to cart!",
+  "addedToCartQtyNoSize": "{quantity}× {name} added to cart!",
 
   "sizeSmall": "Small",
   "sizeMedium": "Medium",
@@ -39,6 +41,7 @@
   "categoryHot": "Hot",
   "categoryCold": "Cold",
   "categoryDessert": "Dessert",
+  "categoryOther": "Other",
 
   "cartTitle": "My Cart",
   "cartEmpty": "Your cart is empty ☕",

@@ -95,6 +95,16 @@ class AppLocalizationsTr extends AppLocalizations {
   }
 
   @override
+  String addedToCartNoSize(Object name) {
+    return '$name sepete eklendi!';
+  }
+
+  @override
+  String addedToCartQtyNoSize(int quantity, Object name) {
+    return '$quantity× $name sepete eklendi!';
+  }
+
+  @override
   String get sizeSmall => 'Küçük';
 
   @override
@@ -111,6 +121,9 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String get categoryDessert => 'Tatlı';
+
+  @override
+  String get categoryOther => 'Diğer';
 
   @override
   String get cartTitle => 'Sepetim';

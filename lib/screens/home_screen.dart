@@ -225,8 +225,7 @@ class _CategoryChips extends StatelessWidget {
           final isSelected = selected == cat;
           final label = cat == null ? l.menu : l.categoryLabel(cat);
           return GestureDetector(
-            onTap: () =>
-                context.read<ProductProvider>().setCategory(cat),
+            onTap: () => context.read<ProductProvider>().setCategory(cat),
             child: AnimatedContainer(
               duration: const Duration(milliseconds: 180),
               alignment: Alignment.center,
@@ -269,14 +268,17 @@ class _ProductGridCard extends StatelessWidget {
 
   void _quickAdd(BuildContext context, AppLocalizations l) {
     context.read<CartProvider>().addToCartWithSize(coffee, 'Orta');
+    // Boyutsuz ürünlerde (tatlı/diğer) "(Orta)" ibaresi anlamsız olur
+    final message = categoryHasSizes(coffee.category)
+        ? l.addedToCart(coffee.name, l.size('Orta'))
+        : l.addedToCartNoSize(coffee.name);
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(l.addedToCart(coffee.name, l.size('Orta'))),
+        content: Text(message),
         backgroundColor: AppColors.espresso,
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 1),
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
     );
   }
@@ -309,8 +311,8 @@ class _ProductGridCard extends StatelessWidget {
                     Container(color: context.imagePlaceholder),
                 errorWidget: (_, __, ___) => Container(
                   color: AppColors.coffee,
-                  child: const Icon(Icons.coffee,
-                      color: Colors.white54, size: 32),
+                  child:
+                      const Icon(Icons.coffee, color: Colors.white54, size: 32),
                 ),
               ),
             ),
@@ -336,8 +338,8 @@ class _ProductGridCard extends StatelessWidget {
                       '${l.categoryLabel(coffee.category)} · +${coffee.points} P',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                          fontSize: 11, color: AppColors.muted),
+                      style:
+                          const TextStyle(fontSize: 11, color: AppColors.muted),
                     ),
                     const Spacer(),
                     Row(

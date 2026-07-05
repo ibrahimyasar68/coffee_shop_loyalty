@@ -254,6 +254,18 @@ abstract class AppLocalizations {
   /// **'{quantity}× {name} ({size}) sepete eklendi!'**
   String addedToCartQty(int quantity, Object name, Object size);
 
+  /// No description provided for @addedToCartNoSize.
+  ///
+  /// In tr, this message translates to:
+  /// **'{name} sepete eklendi!'**
+  String addedToCartNoSize(Object name);
+
+  /// No description provided for @addedToCartQtyNoSize.
+  ///
+  /// In tr, this message translates to:
+  /// **'{quantity}× {name} sepete eklendi!'**
+  String addedToCartQtyNoSize(int quantity, Object name);
+
   /// No description provided for @sizeSmall.
   ///
   /// In tr, this message translates to:
@@ -289,6 +301,12 @@ abstract class AppLocalizations {
   /// In tr, this message translates to:
   /// **'Tatlı'**
   String get categoryDessert;
+
+  /// No description provided for @categoryOther.
+  ///
+  /// In tr, this message translates to:
+  /// **'Diğer'**
+  String get categoryOther;
 
   /// No description provided for @cartTitle.
   ///
