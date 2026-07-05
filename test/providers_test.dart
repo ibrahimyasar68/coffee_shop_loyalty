@@ -289,29 +289,31 @@ void main() {
       expect(box.get('5559999')!.phone, '5559999');
     });
 
-    test('redeemReward 100+ puanı olan üyeden puan düşer', () async {
+    test('redeemProduct maliyeti kadar puanı olan üyeden puan düşer', () async {
       final users = UserProvider();
       await users.addUser(newUser(phone: '5550001', points: 230));
       users.loginWithUser(
           users.registeredUsers.firstWhere((u) => u.phone == '5550001'));
 
-      expect(users.redeemReward(), isTrue);
-      expect(users.currentUser!.points, 130);
+      expect(users.redeemProduct(200), isTrue); // 200 TL'lik ürün
+      expect(users.currentUser!.points, 30);
       // Kalıcılık kontrolü
-      expect(Hive.box<User>('user_box').get('5550001')!.points, 130);
+      expect(Hive.box<User>('user_box').get('5550001')!.points, 30);
     });
 
-    test('redeemReward puan yetersizse veya misafirse reddeder', () async {
+    test('redeemProduct puan yetersiz, maliyet<=0 veya misafirse reddeder',
+        () async {
       final users = UserProvider();
-      await users.addUser(newUser(phone: '5550001', points: 99));
+      await users.addUser(newUser(phone: '5550001', points: 150));
       users.loginWithUser(
           users.registeredUsers.firstWhere((u) => u.phone == '5550001'));
 
-      expect(users.redeemReward(), isFalse);
-      expect(users.currentUser!.points, 99); // değişmedi
+      expect(users.redeemProduct(200), isFalse); // yetersiz
+      expect(users.redeemProduct(0), isFalse); // geçersiz maliyet
+      expect(users.currentUser!.points, 150); // değişmedi
 
       users.loginAsGuest();
-      expect(users.redeemReward(), isFalse);
+      expect(users.redeemProduct(50), isFalse); // misafir
     });
   });
 
@@ -351,6 +353,11 @@ void main() {
     test('diğer kanonik kategoriler listesine eklendi', () {
       expect(kProductCategories, contains('diğer'));
       expect(kProductCategories.length, 4);
+    });
+
+    test('productRewardCost fiyatı puana çevirir (1 TL = 1 puan)', () {
+      expect(productRewardCost(sampleCoffee(price: 200)), 200);
+      expect(productRewardCost(sampleCoffee(price: 84.6)), 85); // yuvarlama
     });
   });
 }

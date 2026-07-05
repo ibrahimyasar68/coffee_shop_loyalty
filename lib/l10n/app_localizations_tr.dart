@@ -188,24 +188,67 @@ class AppLocalizationsTr extends AppLocalizations {
 
   @override
   String pointsToFreeCoffee(int points) {
-    return 'Bedava kahveye $points puan';
+    return 'En ucuz ödüle $points puan';
   }
 
   @override
-  String get freeCoffeeReady => 'Bedava kahve hakkın hazır! 🎉';
+  String get freeCoffeeReady => 'Ödül kullanabilirsin! 🎉';
 
   @override
   String get redeemReward => 'Ödülü Kullan';
 
   @override
-  String get redeemConfirmMessage =>
-      '100 puan karşılığında 1 bedava kahve kullanılacak. Onaylıyor musun?';
+  String get viewRewards => 'Ödülleri Gör';
 
   @override
-  String get rewardRedeemed => 'Afiyet olsun! Bedava kahven kullanıldı. ☕';
+  String get rewardsTitle => 'Ödüllerim';
 
   @override
-  String get freeCoffeeItem => '🎁 Bedava Kahve (Ödül)';
+  String rewardsHint(int points) {
+    return '$points puanınla aşağıdaki ürünleri ödül olarak alabilirsin.';
+  }
+
+  @override
+  String get rewardUse => 'Kullan';
+
+  @override
+  String rewardCostLabel(int points) {
+    return '$points puan';
+  }
+
+  @override
+  String rewardPointsMore(int points) {
+    return '$points puan daha';
+  }
+
+  @override
+  String get rewardsEmpty => 'Şu an alabileceğin bir ödül yok';
+
+  @override
+  String get rewardsEmptyHint => 'Puan biriktirdikçe ürünler burada açılır.';
+
+  @override
+  String get rewardBannerTitle => 'Ödülün hazır! 🎁';
+
+  @override
+  String rewardBannerSubtitle(int points) {
+    return '$points puanınla ürün seç';
+  }
+
+  @override
+  String redeemConfirmMessage(Object name, int points) {
+    return '$name ürününü $points puan karşılığında kullanmak istiyor musun?';
+  }
+
+  @override
+  String rewardRedeemed(Object name) {
+    return '$name ödül olarak kullanıldı, afiyet olsun! ☕';
+  }
+
+  @override
+  String freeItemPrefix(Object name) {
+    return '🎁 $name (Ödül)';
+  }
 
   @override
   String get accountInfo => 'Hesap Bilgileri';

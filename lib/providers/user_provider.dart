@@ -77,15 +77,13 @@ class UserProvider extends ChangeNotifier {
     }
   }
 
-  /// Her [rewardCost] puan 1 bedava kahve hakkı demektir.
-  static const rewardCost = 100;
-
-  /// Ödül kullanımı: giriş yapmış üyenin puanından [rewardCost] düşer.
-  /// Puan yetersizse veya misafirse false döner, hiçbir şey değişmez.
-  bool redeemReward() {
+  /// Ürün bazlı ödül kullanımı: giriş yapmış üyenin puanından [cost] düşer
+  /// (ürünün puan maliyeti = fiyatı, bkz. productRewardCost).
+  /// Puan yetersiz, maliyet geçersiz veya misafirse false döner.
+  bool redeemProduct(int cost) {
     final user = _loggedInUser;
-    if (user == null || user.points < rewardCost) return false;
-    user.points -= rewardCost;
+    if (user == null || cost <= 0 || user.points < cost) return false;
+    user.points -= cost;
     user.save();
     notifyListeners();
     return true;

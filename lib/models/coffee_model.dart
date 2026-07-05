@@ -17,6 +17,10 @@ const kSizedCategories = ['sıcak', 'soğuk'];
 bool categoryHasSizes(String category) =>
     kSizedCategories.contains(category.toLowerCase().trim());
 
+/// Bir ürünü ödül olarak almak için gereken puan (1 TL = 1 puan).
+/// Fiyat tam sayıya yuvarlanır; müşteri puanı bu değere eşit/fazlaysa alabilir.
+int productRewardCost(Coffee coffee) => coffee.price.round();
+
 @HiveType(typeId: 1) // Her modelin benzersiz bir id'si olmalı
 class Coffee extends HiveObject {
   @HiveField(0)

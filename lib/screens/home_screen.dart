@@ -6,6 +6,7 @@ import 'package:coffee_shop_loyalty/providers/cart_provider.dart';
 import 'package:coffee_shop_loyalty/providers/product_provider.dart';
 import 'package:coffee_shop_loyalty/providers/user_provider.dart';
 import 'package:coffee_shop_loyalty/screens/product_detail_screen.dart';
+import 'package:coffee_shop_loyalty/screens/reward_screen.dart';
 import 'package:coffee_shop_loyalty/screens/welcome_screen.dart';
 import 'package:coffee_shop_loyalty/theme/app_theme.dart';
 import 'package:coffee_shop_loyalty/utils/format.dart';
@@ -58,6 +59,17 @@ class HomeScreen extends StatelessWidget {
     final userProvider = context.watch<UserProvider>();
     final user = userProvider.currentUser;
     final products = productProvider.items;
+
+    // Ödül banner'ı: giriş yapan üye, en az bir ürünü puanıyla alabiliyorsa
+    // liste başında sabit görünür. Maliyet karşılaştırması filtreden
+    // bağımsız tüm ürünler üzerinden yapılır.
+    final allProducts = productProvider.allItems;
+    final int? cheapestCost = allProducts.isEmpty
+        ? null
+        : allProducts.map(productRewardCost).reduce((a, b) => a < b ? a : b);
+    final canReward = userProvider.isLoggedIn &&
+        cheapestCost != null &&
+        (user?.points ?? 0) >= cheapestCost;
 
     return PopScope(
       canPop: false,
@@ -158,7 +170,10 @@ class HomeScreen extends StatelessWidget {
             // ── KATEGORİ FİLTRE ÇİPLERİ ──────────────────────────
             _CategoryChips(selected: productProvider.selectedCategory),
 
-            // ── ÜRÜN GRID ────────────────────────────────────────
+            // ── ÖDÜL BANNER (liste başında sabit) ────────────────
+            if (canReward) _RewardBanner(points: user?.points ?? 0),
+
+            // ── ÜRÜN LİSTESİ ─────────────────────────────────────
             Expanded(
               child: products.isEmpty
                   ? Center(
@@ -173,22 +188,15 @@ class HomeScreen extends StatelessWidget {
                         ],
                       ),
                     )
-                  : GridView.builder(
-                      padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        crossAxisSpacing: 12,
-                        mainAxisSpacing: 12,
-                        childAspectRatio: 0.70,
-                      ),
+                  : ListView.builder(
+                      padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
                       itemCount: products.length,
                       itemBuilder: (context, index) {
                         final coffee = products[index];
                         return FadeSlideIn(
                           key: ValueKey('card_${coffee.key}_$index'),
-                          delay: Duration(milliseconds: 50 * (index % 6)),
-                          child: _ProductGridCard(coffee: coffee),
+                          delay: Duration(milliseconds: 40 * (index % 8)),
+                          child: _ProductListRow(coffee: coffee),
                         );
                       },
                     ),
@@ -260,11 +268,11 @@ class _CategoryChips extends StatelessWidget {
 }
 
 // ══════════════════════════════════════════════════════════════
-// ÜRÜN GRID KARTI — sade, hızlı-ekle (varsayılan Orta boyut)
+// ÜRÜN LİSTE SATIRI — yatay kart, hızlı-ekle (varsayılan Orta boyut)
 // ══════════════════════════════════════════════════════════════
-class _ProductGridCard extends StatelessWidget {
+class _ProductListRow extends StatelessWidget {
   final Coffee coffee;
-  const _ProductGridCard({required this.coffee});
+  const _ProductListRow({required this.coffee});
 
   void _quickAdd(BuildContext context, AppLocalizations l) {
     context.read<CartProvider>().addToCartWithSize(coffee, 'Orta');
@@ -292,92 +300,169 @@ class _ProductGridCard extends StatelessWidget {
         fadeThroughRoute(ProductDetailScreen(coffee: coffee)),
       ),
       child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
         decoration: BoxDecoration(
           color: context.surfaceCard,
           borderRadius: BorderRadius.circular(16),
           boxShadow: context.cardShadow,
         ),
         clipBehavior: Clip.antiAlias,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Row(
           children: [
-            // Görsel
-            AspectRatio(
-              aspectRatio: 1.35,
-              child: CachedNetworkImage(
-                imageUrl: coffee.imagePath,
-                fit: BoxFit.cover,
-                placeholder: (_, __) =>
-                    Container(color: context.imagePlaceholder),
-                errorWidget: (_, __, ___) => Container(
-                  color: AppColors.coffee,
-                  child:
-                      const Icon(Icons.coffee, color: Colors.white54, size: 32),
-                ),
+            // Görsel (sol)
+            CachedNetworkImage(
+              imageUrl: coffee.imagePath,
+              width: 96,
+              height: 96,
+              fit: BoxFit.cover,
+              placeholder: (_, __) => Container(
+                  width: 96, height: 96, color: context.imagePlaceholder),
+              errorWidget: (_, __, ___) => Container(
+                width: 96,
+                height: 96,
+                color: AppColors.coffee,
+                child:
+                    const Icon(Icons.coffee, color: Colors.white54, size: 32),
               ),
             ),
-            // Bilgi
+            // Bilgi (orta)
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
                       coffee.name,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        fontSize: 14,
+                        fontSize: 16,
                         fontWeight: FontWeight.bold,
                         color: context.inkStrong,
                       ),
                     ),
-                    const SizedBox(height: 2),
+                    const SizedBox(height: 3),
                     Text(
                       '${l.categoryLabel(coffee.category)} · +${coffee.points} P',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style:
-                          const TextStyle(fontSize: 11, color: AppColors.muted),
+                          const TextStyle(fontSize: 12, color: AppColors.muted),
                     ),
-                    const Spacer(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          formatPrice(coffee.price),
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: context.inkStrong,
-                          ),
-                        ),
-                        ScaleTap(
-                          onTap: () => _quickAdd(context, l),
-                          child: Container(
-                            width: 40,
-                            height: 40,
-                            decoration: BoxDecoration(
-                              color: context.isDarkMode
-                                  ? AppColors.caramel
-                                  : AppColors.espresso,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Icon(Icons.add,
-                                color: context.isDarkMode
-                                    ? AppColors.espresso
-                                    : AppColors.caramel,
-                                size: 22),
-                          ),
-                        ),
-                      ],
+                    const SizedBox(height: 8),
+                    Text(
+                      formatPrice(coffee.price),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: context.inkStrong,
+                      ),
                     ),
                   ],
                 ),
               ),
             ),
+            // Hızlı ekle (sağ)
+            Padding(
+              padding: const EdgeInsets.only(right: 12),
+              child: ScaleTap(
+                onTap: () => _quickAdd(context, l),
+                child: Container(
+                  width: 44,
+                  height: 44,
+                  decoration: BoxDecoration(
+                    color: context.isDarkMode
+                        ? AppColors.caramel
+                        : AppColors.espresso,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Icon(Icons.add,
+                      color: context.isDarkMode
+                          ? AppColors.espresso
+                          : AppColors.caramel,
+                      size: 24),
+                ),
+              ),
+            ),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+// ══════════════════════════════════════════════════════════════
+// ÖDÜL BANNER — liste başında sabit; ödül sayfasına götürür
+// ══════════════════════════════════════════════════════════════
+class _RewardBanner extends StatelessWidget {
+  final int points;
+  const _RewardBanner({required this.points});
+
+  @override
+  Widget build(BuildContext context) {
+    final l = AppLocalizations.of(context);
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+      child: ScaleTap(
+        onTap: () => Navigator.push(
+          context,
+          fadeThroughRoute(const RewardScreen()),
+        ),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          decoration: BoxDecoration(
+            gradient: AppColors.ctaGradient,
+            borderRadius: BorderRadius.circular(16),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.espresso.withValues(alpha: 0.25),
+                blurRadius: 12,
+                offset: const Offset(0, 4),
+              ),
+            ],
+          ),
+          child: Row(
+            children: [
+              Container(
+                width: 42,
+                height: 42,
+                decoration: BoxDecoration(
+                  color: AppColors.caramel.withValues(alpha: 0.25),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Icon(Icons.card_giftcard_rounded,
+                    color: AppColors.caramel, size: 24),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      l.rewardBannerTitle,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 15,
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      l.rewardBannerSubtitle(points),
+                      style: TextStyle(
+                        color: Colors.white.withValues(alpha: 0.85),
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const Icon(Icons.chevron_right, color: AppColors.caramel),
+            ],
+          ),
         ),
       ),
     );

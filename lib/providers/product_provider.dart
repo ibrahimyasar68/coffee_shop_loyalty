@@ -18,9 +18,7 @@ class ProductProvider extends ChangeNotifier {
 
     if (_selectedCategory != null) {
       final cat = _selectedCategory!.toLowerCase().trim();
-      list = list
-          .where((c) => c.category.toLowerCase().trim() == cat)
-          .toList();
+      list = list.where((c) => c.category.toLowerCase().trim() == cat).toList();
     }
     if (_searchQuery.isNotEmpty) {
       final q = _searchQuery.toLowerCase();
@@ -28,6 +26,10 @@ class ProductProvider extends ChangeNotifier {
     }
     return list;
   }
+
+  // Arama/kategori filtresinden bağımsız tüm ürünler (ör. ödül sayfası)
+  List<Coffee> get allItems =>
+      _coffeeBox.isOpen ? _coffeeBox.values.toList() : [];
 
   // Kategori seç (null = Tümü)
   void setCategory(String? category) {

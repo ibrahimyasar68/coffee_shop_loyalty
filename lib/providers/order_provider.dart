@@ -69,6 +69,7 @@ class OrderProvider extends ChangeNotifier {
   Future<void> saveRewardRedemption({
     required String userName,
     required String itemName,
+    String imagePath = '',
   }) async {
     final box = _orderBox;
     if (box == null) return;
@@ -80,7 +81,7 @@ class OrderProvider extends ChangeNotifier {
           coffeeName: itemName,
           price: 0,
           points: 0,
-          imagePath: '',
+          imagePath: imagePath,
           quantity: 1,
         ),
       ],

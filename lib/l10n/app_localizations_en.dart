@@ -187,24 +187,67 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String pointsToFreeCoffee(int points) {
-    return '$points points to a free coffee';
+    return '$points points to your cheapest reward';
   }
 
   @override
-  String get freeCoffeeReady => 'Your free coffee is ready! 🎉';
+  String get freeCoffeeReady => 'You can redeem a reward! 🎉';
 
   @override
   String get redeemReward => 'Redeem Reward';
 
   @override
-  String get redeemConfirmMessage =>
-      '1 free coffee will be redeemed for 100 points. Do you confirm?';
+  String get viewRewards => 'View Rewards';
 
   @override
-  String get rewardRedeemed => 'Enjoy! Your free coffee has been redeemed. ☕';
+  String get rewardsTitle => 'My Rewards';
 
   @override
-  String get freeCoffeeItem => '🎁 Free Coffee (Reward)';
+  String rewardsHint(int points) {
+    return 'With $points points you can redeem the products below.';
+  }
+
+  @override
+  String get rewardUse => 'Redeem';
+
+  @override
+  String rewardCostLabel(int points) {
+    return '$points points';
+  }
+
+  @override
+  String rewardPointsMore(int points) {
+    return '$points more points';
+  }
+
+  @override
+  String get rewardsEmpty => 'No rewards available yet';
+
+  @override
+  String get rewardsEmptyHint => 'Products unlock here as you collect points.';
+
+  @override
+  String get rewardBannerTitle => 'Your reward is ready! 🎁';
+
+  @override
+  String rewardBannerSubtitle(int points) {
+    return 'Pick a product with your $points points';
+  }
+
+  @override
+  String redeemConfirmMessage(Object name, int points) {
+    return 'Redeem $name for $points points?';
+  }
+
+  @override
+  String rewardRedeemed(Object name) {
+    return '$name redeemed — enjoy! ☕';
+  }
+
+  @override
+  String freeItemPrefix(Object name) {
+    return '🎁 $name (Reward)';
+  }
 
   @override
   String get accountInfo => 'Account Info';

@@ -1,9 +1,11 @@
 import 'package:coffee_shop_loyalty/l10n/app_localizations.dart';
-import 'package:coffee_shop_loyalty/providers/order_provider.dart';
+import 'package:coffee_shop_loyalty/models/coffee_model.dart';
+import 'package:coffee_shop_loyalty/providers/product_provider.dart';
 import 'package:coffee_shop_loyalty/providers/user_provider.dart';
 import 'package:coffee_shop_loyalty/screens/add_product_screen.dart';
 import 'package:coffee_shop_loyalty/screens/admin_gate_screen.dart';
 import 'package:coffee_shop_loyalty/screens/order_history_screen.dart';
+import 'package:coffee_shop_loyalty/screens/reward_screen.dart';
 import 'package:coffee_shop_loyalty/screens/settings_screen.dart';
 import 'package:coffee_shop_loyalty/screens/welcome_screen.dart';
 import 'package:coffee_shop_loyalty/theme/app_theme.dart';
@@ -14,46 +16,11 @@ import 'package:provider/provider.dart';
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
-  // Ödül kullanımı: onay → puan düş → geçmişe kaydet → bildir
-  Future<void> _redeemReward(BuildContext context) async {
-    final l = AppLocalizations.of(context);
-    final ok = await showDialog<bool>(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: Text(l.redeemReward),
-        content: Text(l.redeemConfirmMessage),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(ctx, false),
-            child: Text(l.cancel),
-          ),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(minimumSize: const Size(88, 44)),
-            onPressed: () => Navigator.pop(ctx, true),
-            child: Text(l.redeemReward),
-          ),
-        ],
-      ),
-    );
-    if (ok != true || !context.mounted) return;
-
-    final userProvider = context.read<UserProvider>();
-    final orderProvider = context.read<OrderProvider>();
-    final user = userProvider.currentUser;
-    final name = '${user?.name ?? ''} ${user?.surname ?? ''}'.trim();
-
-    if (userProvider.redeemReward()) {
-      await orderProvider.saveRewardRedemption(
-        userName: name,
-        itemName: l.freeCoffeeItem,
-      );
-      if (context.mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(l.rewardRedeemed)),
-        );
-      }
-    }
+  // En ucuz ödülün puan maliyeti (hiç ürün yoksa null)
+  int? _cheapestRewardCost(BuildContext context) {
+    final products = context.watch<ProductProvider>().allItems;
+    if (products.isEmpty) return null;
+    return products.map(productRewardCost).reduce((a, b) => a < b ? a : b);
   }
 
   // Puana göre rozet seviyesi
@@ -222,9 +189,14 @@ class ProfileScreen extends StatelessWidget {
                     points: points,
                     progress: progress,
                     nextLevel: nextLevel,
-                    // Ödül yalnızca kayıtlı üye girişinde kullanılabilir
-                    onRedeem: context.watch<UserProvider>().isLoggedIn
-                        ? () => _redeemReward(context)
+                    // En ucuz ödülün puan maliyeti (filtreden bağımsız)
+                    cheapestReward: _cheapestRewardCost(context),
+                    // Ödül sayfası yalnızca kayıtlı üye girişinde açılır
+                    onOpenRewards: context.watch<UserProvider>().isLoggedIn
+                        ? () => Navigator.push(
+                              context,
+                              fadeThroughRoute(const RewardScreen()),
+                            )
                         : null,
                   ),
                   const SizedBox(height: 20),
@@ -255,7 +227,8 @@ class ProfileScreen extends StatelessWidget {
                   _InfoCard(
                     icon: Icons.sticky_note_2_outlined,
                     label: l.note,
-                    value: user?.note.isNotEmpty == true ? user!.note : l.noNote,
+                    value:
+                        user?.note.isNotEmpty == true ? user!.note : l.noNote,
                   ),
                   const SizedBox(height: 28),
 
@@ -372,13 +345,15 @@ class _PointsCard extends StatelessWidget {
   final int points;
   final double progress;
   final int nextLevel;
-  final VoidCallback? onRedeem;
+  final int? cheapestReward;
+  final VoidCallback? onOpenRewards;
 
   const _PointsCard({
     required this.points,
     required this.progress,
     required this.nextLevel,
-    this.onRedeem,
+    this.cheapestReward,
+    this.onOpenRewards,
   });
 
   @override
@@ -424,7 +399,8 @@ class _PointsCard extends StatelessWidget {
                 ),
                 child: Text(
                   l.loyaltyTag,
-                  style: const TextStyle(color: AppColors.caramel, fontSize: 11),
+                  style:
+                      const TextStyle(color: AppColors.caramel, fontSize: 11),
                 ),
               ),
             ],
@@ -468,33 +444,43 @@ class _PointsCard extends StatelessWidget {
             style: const TextStyle(color: Colors.white54, fontSize: 12),
           ),
 
-          // ── ÖDÜL HEDEFİ: BEDAVA KAHVE ──────────────────────
+          // ── ÖDÜL HEDEFİ ────────────────────────────────────
           const SizedBox(height: 16),
           Divider(color: Colors.white.withValues(alpha: 0.12), height: 1),
           const SizedBox(height: 14),
-          _RewardGoal(points: points, onRedeem: onRedeem),
+          _RewardGoal(
+            points: points,
+            cheapestReward: cheapestReward,
+            onOpenRewards: onOpenRewards,
+          ),
         ],
       ),
     );
   }
 }
 
-// ── BEDAVA KAHVE ÖDÜL HEDEFİ ───────────────────────────────────
+// ── ÖDÜL HEDEFİ ────────────────────────────────────────────────
+// En ucuz ödüle (en düşük fiyatlı ürünün puan maliyeti) göre ilerleme.
 class _RewardGoal extends StatelessWidget {
   final int points;
-  final VoidCallback? onRedeem;
-  const _RewardGoal({required this.points, this.onRedeem});
-
-  // Her [_threshold] puan 1 bedava kahve hakkı; kullanım puandan düşer
-  static const _threshold = UserProvider.rewardCost;
+  final int? cheapestReward; // en ucuz ödülün puan maliyeti; null = ürün yok
+  final VoidCallback? onOpenRewards; // ödül sayfasını aç (kayıtlı üye)
+  const _RewardGoal({
+    required this.points,
+    this.cheapestReward,
+    this.onOpenRewards,
+  });
 
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
-    final ready = points >= _threshold; // en az 1 hak birikti
-    final inCycle = points % _threshold; // mevcut döngüdeki puan
-    final remaining = _threshold - inCycle;
-    final goalProgress = ready ? 1.0 : inCycle / _threshold;
+    final target = cheapestReward;
+    // Ürün yoksa ödül bölümünü hiç gösterme
+    if (target == null) return const SizedBox.shrink();
+
+    final ready = points >= target; // en az bir ödül alınabilir
+    final remaining = ready ? 0 : target - points;
+    final goalProgress = ready ? 1.0 : points / target;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -513,13 +499,13 @@ class _RewardGoal extends StatelessWidget {
               ),
             ),
             const Spacer(),
-            Text('$inCycle/$_threshold',
+            Text('$points/$target',
                 style: const TextStyle(color: Colors.white54, fontSize: 12)),
           ],
         ),
         const SizedBox(height: 8),
         TweenAnimationBuilder<double>(
-          tween: Tween(begin: 0, end: goalProgress),
+          tween: Tween(begin: 0, end: goalProgress.clamp(0.0, 1.0)),
           duration: const Duration(milliseconds: 900),
           curve: Curves.easeOutCubic,
           builder: (context, value, _) => ClipRRect(
@@ -541,19 +527,19 @@ class _RewardGoal extends StatelessWidget {
             fontWeight: ready ? FontWeight.bold : FontWeight.normal,
           ),
         ),
-        // Hak varsa ve üye girişi yapıldıysa kullanım butonu göster
-        if (ready && onRedeem != null) ...[
+        // Ödül alınabiliyorsa ve üye girişi yapıldıysa ödül sayfası butonu
+        if (ready && onOpenRewards != null) ...[
           const SizedBox(height: 12),
           SizedBox(
             width: double.infinity,
             height: 44,
             child: ElevatedButton.icon(
-              onPressed: onRedeem,
+              onPressed: onOpenRewards,
               icon: const Icon(Icons.card_giftcard_rounded, size: 18),
               label: Text(
-                l.redeemReward,
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold, fontSize: 14),
+                l.viewRewards,
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
               ),
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.caramel,
@@ -661,8 +647,7 @@ class _MenuTile extends StatelessWidget {
       ),
       child: ListTile(
         onTap: onTap,
-        shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(14)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
         leading: Container(
           width: 38,
           height: 38,

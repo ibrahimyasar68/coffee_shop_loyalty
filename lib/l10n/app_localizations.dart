@@ -425,13 +425,13 @@ abstract class AppLocalizations {
   /// No description provided for @pointsToFreeCoffee.
   ///
   /// In tr, this message translates to:
-  /// **'Bedava kahveye {points} puan'**
+  /// **'En ucuz ödüle {points} puan'**
   String pointsToFreeCoffee(int points);
 
   /// No description provided for @freeCoffeeReady.
   ///
   /// In tr, this message translates to:
-  /// **'Bedava kahve hakkın hazır! 🎉'**
+  /// **'Ödül kullanabilirsin! 🎉'**
   String get freeCoffeeReady;
 
   /// No description provided for @redeemReward.
@@ -440,23 +440,83 @@ abstract class AppLocalizations {
   /// **'Ödülü Kullan'**
   String get redeemReward;
 
+  /// No description provided for @viewRewards.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ödülleri Gör'**
+  String get viewRewards;
+
+  /// No description provided for @rewardsTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ödüllerim'**
+  String get rewardsTitle;
+
+  /// No description provided for @rewardsHint.
+  ///
+  /// In tr, this message translates to:
+  /// **'{points} puanınla aşağıdaki ürünleri ödül olarak alabilirsin.'**
+  String rewardsHint(int points);
+
+  /// No description provided for @rewardUse.
+  ///
+  /// In tr, this message translates to:
+  /// **'Kullan'**
+  String get rewardUse;
+
+  /// No description provided for @rewardCostLabel.
+  ///
+  /// In tr, this message translates to:
+  /// **'{points} puan'**
+  String rewardCostLabel(int points);
+
+  /// No description provided for @rewardPointsMore.
+  ///
+  /// In tr, this message translates to:
+  /// **'{points} puan daha'**
+  String rewardPointsMore(int points);
+
+  /// No description provided for @rewardsEmpty.
+  ///
+  /// In tr, this message translates to:
+  /// **'Şu an alabileceğin bir ödül yok'**
+  String get rewardsEmpty;
+
+  /// No description provided for @rewardsEmptyHint.
+  ///
+  /// In tr, this message translates to:
+  /// **'Puan biriktirdikçe ürünler burada açılır.'**
+  String get rewardsEmptyHint;
+
+  /// No description provided for @rewardBannerTitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'Ödülün hazır! 🎁'**
+  String get rewardBannerTitle;
+
+  /// No description provided for @rewardBannerSubtitle.
+  ///
+  /// In tr, this message translates to:
+  /// **'{points} puanınla ürün seç'**
+  String rewardBannerSubtitle(int points);
+
   /// No description provided for @redeemConfirmMessage.
   ///
   /// In tr, this message translates to:
-  /// **'100 puan karşılığında 1 bedava kahve kullanılacak. Onaylıyor musun?'**
-  String get redeemConfirmMessage;
+  /// **'{name} ürününü {points} puan karşılığında kullanmak istiyor musun?'**
+  String redeemConfirmMessage(Object name, int points);
 
   /// No description provided for @rewardRedeemed.
   ///
   /// In tr, this message translates to:
-  /// **'Afiyet olsun! Bedava kahven kullanıldı. ☕'**
-  String get rewardRedeemed;
+  /// **'{name} ödül olarak kullanıldı, afiyet olsun! ☕'**
+  String rewardRedeemed(Object name);
 
-  /// No description provided for @freeCoffeeItem.
+  /// No description provided for @freeItemPrefix.
   ///
   /// In tr, this message translates to:
-  /// **'🎁 Bedava Kahve (Ödül)'**
-  String get freeCoffeeItem;
+  /// **'🎁 {name} (Ödül)'**
+  String freeItemPrefix(Object name);
 
   /// No description provided for @accountInfo.
   ///
