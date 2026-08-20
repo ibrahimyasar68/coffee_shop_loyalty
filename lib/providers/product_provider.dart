@@ -60,7 +60,7 @@ class ProductProvider extends ChangeNotifier {
           name: "Latte",
           price: 85.0,
           imagePath:
-              "https://images.unsplash.com/photo-1536939459926-301728717817",
+              "https://images.unsplash.com/photo-1541167760496-1628856ab772",
           points: 10,
           note: "",
           category: "sıcak",
