@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:coffee_shop_loyalty/l10n/app_localizations.dart';
 import 'package:coffee_shop_loyalty/providers/locale_provider.dart';
 import 'package:coffee_shop_loyalty/providers/theme_provider.dart';
@@ -13,6 +15,7 @@ import 'package:coffee_shop_loyalty/providers/cart_provider.dart';
 import 'package:coffee_shop_loyalty/providers/product_provider.dart';
 import 'package:coffee_shop_loyalty/providers/user_provider.dart';
 import 'package:coffee_shop_loyalty/providers/order_provider.dart';
+import 'package:coffee_shop_loyalty/utils/ads_service.dart';
 
 void main() async {
   try {
@@ -30,6 +33,10 @@ void main() async {
     await Hive.openBox<Order>('order_box');
     // Admin PIN gibi uygulama ayarları için genel amaçlı kutu
     await Hive.openBox('settings_box');
+
+    // AdMob'u başlat — açılışı bloklamaması için beklenmiyor, hatalar
+    // servisin kendi içinde yutuluyor.
+    unawaited(AdsService.initialize());
 
     runApp(
       MultiProvider(

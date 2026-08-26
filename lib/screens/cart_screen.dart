@@ -6,6 +6,7 @@ import 'package:coffee_shop_loyalty/l10n/app_localizations.dart';
 import 'package:coffee_shop_loyalty/l10n/l10n_helpers.dart';
 import 'package:coffee_shop_loyalty/screens/order_success_screen.dart';
 import 'package:coffee_shop_loyalty/theme/app_theme.dart';
+import 'package:coffee_shop_loyalty/utils/ads_service.dart';
 import 'package:coffee_shop_loyalty/utils/format.dart';
 import 'package:coffee_shop_loyalty/widgets/animations.dart';
 import 'package:flutter/material.dart';
@@ -205,7 +206,12 @@ class CartScreen extends StatelessWidget {
                         userProvider.addPoints(earned);
                         await cartProvider.clearCart();
 
-                        // 4. Onay ekranına geç
+                        // 4. Tam ekran reklam — yalnızca YENİ sipariş
+                        // tamamlandığında ve sıklık sınırı dolduğunda
+                        // gösterilir; kapanmadan onay ekranına geçilmez.
+                        await AdsService.onOrderCompleted();
+
+                        // 5. Onay ekranına geç
                         if (context.mounted) {
                           Navigator.pushReplacement(
                             context,

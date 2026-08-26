@@ -4,6 +4,7 @@ import 'package:coffee_shop_loyalty/screens/home_screen.dart';
 import 'package:coffee_shop_loyalty/screens/profile_screen.dart';
 import 'package:coffee_shop_loyalty/l10n/app_localizations.dart';
 import 'package:coffee_shop_loyalty/theme/app_theme.dart';
+import 'package:coffee_shop_loyalty/widgets/ad_banner.dart';
 import 'package:coffee_shop_loyalty/widgets/animations.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -16,6 +17,24 @@ class BottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l = AppLocalizations.of(context);
+    // Banner reklam çubuğun hemen üstünde, tüm sekmelerde sabit kalır.
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const AdBanner(),
+        _NavBar(l: l, current: current),
+      ],
+    );
+  }
+}
+
+class _NavBar extends StatelessWidget {
+  final AppLocalizations l;
+  final int current;
+  const _NavBar({required this.l, required this.current});
+
+  @override
+  Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
         color: AppColors.espresso,

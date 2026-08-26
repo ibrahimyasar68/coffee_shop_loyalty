@@ -1,4 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- AdMob reklamlarının yüklenebilmesi için gerekli -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+
     <application
         android:label="coffee_shop_loyalty"
         android:name="${applicationName}"
@@ -25,6 +30,13 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+        <!-- AdMob uygulama kimliği (gerçek App ID).
+             Bu değer AdMob'daki uygulama kaydıyla eşleşmek zorundadır;
+             yanlış veya eksik olursa uygulama açılışta çöker. -->
+        <meta-data
+            android:name="com.google.android.gms.ads.APPLICATION_ID"
+            android:value="ca-app-pub-2349446548941129~5983438465" />
+
         <!-- Don't delete the meta-data below.
              This is used by the Flutter tool to generate GeneratedPluginRegistrant.java -->
         <meta-data
