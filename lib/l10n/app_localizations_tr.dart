@@ -9,10 +9,10 @@ class AppLocalizationsTr extends AppLocalizations {
   AppLocalizationsTr([String locale = 'tr']) : super(locale);
 
   @override
-  String get appName => 'Coffee Shop & Loyalty';
+  String get appName => 'CoffeeShop';
 
   @override
-  String get appTitle => 'Coffee Shop';
+  String get appTitle => 'CoffeeShop';
 
   @override
   String get guest => 'Misafir';

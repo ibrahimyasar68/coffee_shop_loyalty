@@ -101,13 +101,13 @@ abstract class AppLocalizations {
   /// No description provided for @appName.
   ///
   /// In tr, this message translates to:
-  /// **'Coffee Shop & Loyalty'**
+  /// **'CoffeeShop'**
   String get appName;
 
   /// No description provided for @appTitle.
   ///
   /// In tr, this message translates to:
-  /// **'Coffee Shop'**
+  /// **'CoffeeShop'**
   String get appTitle;
 
   /// No description provided for @guest.
