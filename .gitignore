@@ -57,3 +57,6 @@ build/
 **/*.keystore
 **/*.p12
 **/*.pem
+
+# Oturum devir notu — yerelde kalır, repoya girmez
+docs/BURADAN-DEVAM.md
