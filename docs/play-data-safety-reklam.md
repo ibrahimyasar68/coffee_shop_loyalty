@@ -4,6 +4,9 @@ AdMob entegrasyonundan sonra Play Console'da güncellenmesi gereken beyanlar.
 Form doldururken bu dosyayı yanında açık tut. Sıra önemli: **beyanları AAB
 yüklemeden önce** tamamlarsan sürüm incelemesi tek turda biter.
 
+> Play Console'u **Türkçe** kullanıyorsan menü adlarının Türkçe karşılıklarıyla
+> hazırlanmış sürüm: [`play-data-safety-reklam-tr.md`](play-data-safety-reklam-tr.md)
+
 ---
 
 ## 1) App content → Ads
