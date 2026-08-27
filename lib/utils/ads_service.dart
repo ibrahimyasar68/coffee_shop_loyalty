@@ -162,9 +162,14 @@ class AdsService {
 
   static Future<void> _showInterstitial() async {
     final ad = _interstitial;
-    // Reklam henüz hazır değilse bu tamamlamayı sessizce geç; kullanıcıyı
-    // yükleme için bekletmek sipariş akışını bozar.
+    // Reklam henüz hazır değilse (ör. AdMob "no fill" döndürdüyse) kullanıcıyı
+    // yükleme için bekletmeyiz — sipariş akışı bölünmemeli. Bunun yerine sayacı
+    // bir geri alırız; böylece gösterim hakkı yanmaz ve bir sonraki siparişte
+    // yeniden denenir.
     if (ad == null) {
+      final box = _settings;
+      final count = (box?.get(_completionCountKey) as int?) ?? 0;
+      if (count > 0) await box?.put(_completionCountKey, count - 1);
       await loadInterstitial();
       return;
     }
