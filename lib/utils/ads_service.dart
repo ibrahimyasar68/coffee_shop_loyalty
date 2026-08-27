@@ -78,6 +78,14 @@ class AdsService {
     if (!_supported) return;
     try {
       await MobileAds.instance.initialize();
+
+      // Play'de hedef kitle 13+ olarak beyan edildi (13-15, 16-17, 18+).
+      // Gösterilen reklamların da bu kitleye uygun kalması için içerik
+      // derecelendirmesi üst sınırı T (Teen); MA (yetişkin) reklam gelmez.
+      await MobileAds.instance.updateRequestConfiguration(
+        RequestConfiguration(maxAdContentRating: MaxAdContentRating.t),
+      );
+
       // İlk tam ekran reklamı şimdiden hazırla — gösterim anında beklenmesin.
       await loadInterstitial();
     } catch (e) {

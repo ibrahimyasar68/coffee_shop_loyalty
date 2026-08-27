@@ -79,12 +79,18 @@ tanımına göre **"collected" sayılmaz**, çünkü ağ üzerinden hiçbir yere
 
 | Soru | Cevap |
 |---|---|
-| Hedef yaş grubu | **13 ve üzeri** (18+ seçmek de mümkün) |
+| Hedef yaş grubu | **13-15 + 16-17 + 18 yaş ve üstü** (seçilen: 13+) |
+| "Küçük olduğu belirlenen kullanıcıların erişimini kısıtla" | **İşaretsiz** — işaretlenirse 18 altı yaş grupları seçilemez |
 
 > ⚠️ Eğer yaş grubuna 13 altı dahil edilirse Google Play **Families** politikası
 > devreye girer; bu durumda kullandığımız standart AdMob birimleri uygun olmaz,
 > sertifikalı reklam ağı + `setTagForChildDirectedTreatment` gerekir. Kahve
 > dükkânı uygulaması için 13+ doğru cevaptır.
+
+> 🔗 Kod bağlantısı: 13-17 kitlesi beyan edildiği için `ads_service.dart` içinde
+> reklam içerik derecelendirmesi üst sınırı **T (Teen)** olarak ayarlandı
+> (`RequestConfiguration(maxAdContentRating: MaxAdContentRating.t)`). Hedef kitle
+> ileride değişirse bu ayar da gözden geçirilmeli.
 
 ---
 

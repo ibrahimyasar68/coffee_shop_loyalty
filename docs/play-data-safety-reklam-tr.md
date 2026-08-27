@@ -84,12 +84,24 @@ tanımına göre **"toplanıyor" sayılmaz**, çünkü ağ üzerinden hiçbir ye
 
 | Soru | Cevap |
 |---|---|
-| Hedef yaş grubu *(Target age group)* | **13 ve üzeri** (18+ seçmek de mümkün) |
+| Hedef yaş grubu *(Target age group)* | **13-15 + 16-17 + 18 yaş ve üstü** (seçilen: 13+) |
+| "Google'ın küçük olduğunu belirlediği kullanıcıların uygulamama erişimini kısıtla" *(isteğe bağlı)* | **İşaretsiz** |
 
 > ⚠️ Yaş grubuna 13 altı dahil edilirse Google Play **Aile Programı**
 > *(Families)* politikası devreye girer; bu durumda kullandığımız standart AdMob
 > birimleri uygun olmaz, sertifikalı reklam ağı + `setTagForChildDirectedTreatment`
 > gerekir. Kahve dükkânı uygulaması için 13+ doğru cevaptır.
+
+> ⚠️ "Küçük olduğu belirlenen kullanıcıların erişimini kısıtla" kutusu isteğe
+> bağlıdır ve işaretlenirse 18 altı yaş gruplarını seçmek mümkün olmaz — yani
+> lise çağındaki müşteriler uygulamayı Play'de bulamaz. Kahve dükkânı için bu
+> kutu işaretsiz bırakıldı.
+
+> 🔗 Kod bağlantısı: 13-17 kitlesi beyan edildiği için `ads_service.dart` içinde
+> reklam içerik derecelendirmesi üst sınırı **T (Teen)** olarak ayarlandı
+> (`RequestConfiguration(maxAdContentRating: MaxAdContentRating.t)`), böylece
+> MA (yetişkin) içerikli reklam gelmez. Hedef kitle ileride değişirse bu ayar da
+> gözden geçirilmeli.
 
 ---
 
