@@ -49,7 +49,8 @@ class CartScreen extends StatelessWidget {
               ),
             )
           : ListView.builder(
-              padding: const EdgeInsets.fromLTRB(16, 16, 16, 120),
+              padding: EdgeInsets.fromLTRB(
+                  16, 16, 16, 120 + MediaQuery.paddingOf(context).bottom),
               itemCount: lines.length,
               itemBuilder: (context, index) {
                 final line = lines[index];
@@ -130,7 +131,10 @@ class CartScreen extends StatelessWidget {
               },
             ),
       bottomSheet: Container(
-        padding: const EdgeInsets.all(16),
+        // Android 15+ kenardan kenara çizimde panel sistem çubuğunun altında
+        // kalmasın; zemin rengi çubuğun arkasına kadar uzanır.
+        padding: EdgeInsets.fromLTRB(
+            16, 16, 16, 16 + MediaQuery.paddingOf(context).bottom),
         decoration: BoxDecoration(
           color: context.surfaceCard,
           boxShadow: [

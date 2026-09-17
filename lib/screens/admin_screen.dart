@@ -209,7 +209,8 @@ class _SummaryTab extends StatelessWidget {
     final top3 = topUsers.take(3).toList();
 
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
+      padding: EdgeInsets.fromLTRB(
+          20, 20, 20, 20 + MediaQuery.paddingOf(context).bottom),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -410,7 +411,8 @@ class _ProductsTab extends StatelessWidget {
           child: products.isEmpty
               ? _EmptyState(message: l.noProductsYet)
               : ListView.builder(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: EdgeInsets.fromLTRB(
+                      16, 0, 16, MediaQuery.paddingOf(context).bottom),
                   itemCount: products.length,
                   itemBuilder: (context, index) {
                     final coffee = products[index];
@@ -446,7 +448,8 @@ class _UsersTab extends StatelessWidget {
     return users.isEmpty
         ? _EmptyState(message: l.noRegisteredMembers)
         : ListView.builder(
-            padding: const EdgeInsets.all(16),
+            padding: EdgeInsets.fromLTRB(
+                16, 16, 16, 16 + MediaQuery.paddingOf(context).bottom),
             itemCount: users.length,
             itemBuilder: (context, index) {
               final user = users[index];
@@ -826,7 +829,12 @@ class _AddProductSheetState extends State<_AddProductSheet> {
             const BorderRadius.vertical(top: Radius.circular(24)),
       ),
       padding: EdgeInsets.fromLTRB(
-          20, 20, 20, MediaQuery.of(context).viewInsets.bottom + 20),
+          20,
+          20,
+          20,
+          MediaQuery.of(context).viewInsets.bottom +
+              MediaQuery.paddingOf(context).bottom +
+              20),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1212,7 +1220,12 @@ class _EditProductSheetState extends State<_EditProductSheet> {
             const BorderRadius.vertical(top: Radius.circular(24)),
       ),
       padding: EdgeInsets.fromLTRB(
-          20, 20, 20, MediaQuery.of(context).viewInsets.bottom + 20),
+          20,
+          20,
+          20,
+          MediaQuery.of(context).viewInsets.bottom +
+              MediaQuery.paddingOf(context).bottom +
+              20),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -1428,7 +1441,12 @@ class _EditUserSheetState extends State<_EditUserSheet> {
             const BorderRadius.vertical(top: Radius.circular(24)),
       ),
       padding: EdgeInsets.fromLTRB(
-          20, 20, 20, MediaQuery.of(context).viewInsets.bottom + 20),
+          20,
+          20,
+          20,
+          MediaQuery.of(context).viewInsets.bottom +
+              MediaQuery.paddingOf(context).bottom +
+              20),
       child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

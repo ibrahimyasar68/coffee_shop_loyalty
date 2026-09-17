@@ -21,7 +21,8 @@ class SettingsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(l.settingsTitle)),
       body: ListView(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.fromLTRB(
+            20, 20, 20, 20 + MediaQuery.paddingOf(context).bottom),
         children: [
           // ── DİL ──────────────────────────────────────────────
           _SectionTitle(icon: Icons.language, title: l.language),

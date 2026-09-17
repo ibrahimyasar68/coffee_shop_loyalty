@@ -158,7 +158,8 @@ class _AdminGateScreenState extends State<AdminGateScreen> {
           AppBar(title: Text(setup ? l.adminCreatePin : l.adminLogin)),
       body: Center(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.fromLTRB(
+              24, 24, 24, 24 + MediaQuery.paddingOf(context).bottom),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [

@@ -12,7 +12,8 @@ class UserGuideScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text(l.userGuide)),
       body: ListView(
-        padding: const EdgeInsets.all(20),
+        padding: EdgeInsets.fromLTRB(
+            20, 20, 20, 20 + MediaQuery.paddingOf(context).bottom),
         children: [
           _Section(title: l.guidePurposeTitle, body: l.guidePurposeBody),
           _Section(title: l.guideUsageTitle, body: l.guideUsageBody),

@@ -51,7 +51,8 @@ class MemberSelectScreen extends StatelessWidget {
         ],
       ),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+        padding: EdgeInsets.fromLTRB(
+            16, 16, 16, 24 + MediaQuery.paddingOf(context).bottom),
         children: [
           if (members.isNotEmpty)
             Padding(

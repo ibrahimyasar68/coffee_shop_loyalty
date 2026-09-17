@@ -125,7 +125,8 @@ class RewardScreen extends StatelessWidget {
             child: products.isEmpty
                 ? _EmptyRewards()
                 : ListView.builder(
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.fromLTRB(
+                        16, 16, 16, 16 + MediaQuery.paddingOf(context).bottom),
                     itemCount: products.length,
                     itemBuilder: (context, index) {
                       final coffee = products[index];

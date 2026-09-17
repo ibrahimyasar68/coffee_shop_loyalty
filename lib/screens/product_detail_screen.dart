@@ -176,7 +176,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen>
               child: SlideTransition(
                 position: _slideAnim,
                 child: Padding(
-                  padding: const EdgeInsets.all(20),
+                  padding: EdgeInsets.fromLTRB(
+                      20, 20, 20, 20 + MediaQuery.paddingOf(context).bottom),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
